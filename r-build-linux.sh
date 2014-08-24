@@ -74,6 +74,7 @@ Make() {
 
 Test() {
     ## TODO
+    true
 }
 
 Retry() {
