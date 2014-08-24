@@ -25,6 +25,8 @@ GetRecommended() {
 }
 
 Configure() {
+    mkdir -p $HOME/R/R-devel
+
     R_PAPERSIZE=letter                              \
     R_BATCHSAVE="--no-save --no-restore"            \
     R_BROWSER=xdg-open                              \
@@ -43,7 +45,7 @@ Configure() {
     F77="ccache gfortran"                           \
     MAKE="make"                                     \
     ./configure                                     \
-    --prefix=/usr/local/lib/R-devel                 \
+    --prefix=$HOME/R/R-devel                        \
     --enable-R-shlib                                \
     --with-blas                                     \
     --with-lapack                                   \
@@ -93,7 +95,7 @@ Retry() {
 }
 
 GetDeps
-CreateRD
+## CreateRD
 GetRecommended
 Configure
 BuildManual
