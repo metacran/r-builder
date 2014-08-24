@@ -62,9 +62,10 @@ CleanBeforeMake() {
 
 FixSVN() {
     echo -n 'Revision: ' > SVN-REVISION
-    git log --format=%B -n 1 \
-	| grep "^git-svn-id" \
-	| sed -E 's/^git-svn-id: https:\/\/svn.r-project.org\/R\/.*?@([0-9]+).*$/\1/' \
+    git log --format=%B -n 10   \
+	| grep "^git-svn-id"    \
+	| head -1               \
+	| sed -E 's/^git-svn-id: https:\/\/svn.r-project.org\/R\/[^@]*@([0-9]+).*$/\1/' \
 	      >> SVN-REVISION
     echo -n 'Last Changed Date: ' >>  SVN-REVISION
     git log -1 --pretty=format:"%ad" --date=iso | cut -d' ' -f1 >> SVN-REVISION
