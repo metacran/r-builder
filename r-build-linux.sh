@@ -68,6 +68,7 @@ FixSVN() {
 	      >> SVN-REVISION
     echo -n 'Last Changed Date: ' >>  SVN-REVISION
     git log -1 --pretty=format:"%ad" --date=iso | cut -d' ' -f1 >> SVN-REVISION
+    cat SVN-REVISION
 }
 
 Make() {
