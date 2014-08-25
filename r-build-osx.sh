@@ -95,6 +95,8 @@ Retry() {
     exit 1
 }
 
+export PATH=/usr/local/bin:$PATH
+
 GetDeps
 ## CreateRD
 GetRecommended
