@@ -40,8 +40,8 @@ Configure() {
     AWK=/usr/bin/awk                                \
     CFLAGS="-std=gnu99 -Wall -pedantic"             \
     CXXFLAGS="-Wall -pedantic"                      \
-    FC="gfortran"                                   \
-    F77="gfortran"                                  \
+    FC="gfortran -arch x86_64"                      \
+    F77="gfortran -arch x86_64"                     \
     MAKE="make"                                     \
     ./configure                                     \
     --prefix=$HOME/R/R-devel                        \
