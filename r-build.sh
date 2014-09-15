@@ -47,9 +47,12 @@ GetRecommended() {
     Retry tools/rsync-recommended
 }
 
-Configure() {
+CreateInstDir() {
     sudo mkdir -p /opt/R/R-${version}
+    sudo chown -R $(id -un):$(id -gn) /opt/R
+}
 
+Configure() {
     R_PAPERSIZE=letter                                       \
     R_BATCHSAVE="--no-save --no-restore"                     \
     PERL=/usr/bin/perl                                       \
@@ -95,6 +98,7 @@ Retry() {
 BuildVersion() {
     GetDeps
     GetSource
+    CreateInstDir
     Configure
     Make
     Install
@@ -104,6 +108,7 @@ BuildVersion() {
 BuildDevel() {
     GetDevelSource
     GetRecommended
+    CreateInstDir
     Configure
     Make
     Install
