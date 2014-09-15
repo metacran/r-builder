@@ -4,7 +4,7 @@ set -e
 set -x
 
 export PATH=/usr/local/bin:$PATH
-export CRAN=cran.rstudio.com
+export CRAN=http://cran.rstudio.com
 export roptions=""
 
 # Detect OS
@@ -52,7 +52,7 @@ GetDeps() {
 GetSource() {
     rm -rf R-${version} R-${version}.tar.gz
     major=$(echo $version | sed 's/\..*$//')
-    url="http://${CRAN}/src/base/R-${major}/R-${version}.tar.gz"
+    url="${CRAN}/src/base/R-${major}/R-${version}.tar.gz"
     curl -O "$url"
     tar xzf "R-${version}.tar.gz"
 }
