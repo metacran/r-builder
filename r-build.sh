@@ -76,8 +76,9 @@ Install() {
 }
 
 Release() {
-    # Do nothing for now
-    true
+    # Just tar it up, the 'deploy' section in .travis.yml will
+    # deploy it
+    tar czf R-binary-${version}.tar.gz /opt/R/R-${version}
 }
 
 Retry() {
