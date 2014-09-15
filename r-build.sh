@@ -53,7 +53,6 @@ GetSource() {
     url="http://${CRAN}/src/base/R-${major}/R-${version}.tar.gz"
     curl -O "$url"
     tar xzf "R-${version}.tar.gz"
-    cd R-${version}
 }
 
 GetDevelSource() {
@@ -71,26 +70,35 @@ CreateInstDir() {
 }
 
 Configure() {
-    R_PAPERSIZE=letter                                       \
-    R_BATCHSAVE="--no-save --no-restore"                     \
-    PERL=/usr/bin/perl                                       \
-    R_UNZIPCMD=/usr/bin/unzip                                \
-    R_ZIPCMD=/usr/bin/zip                                    \
-    R_PRINTCMD=/usr/bin/lpr                                  \
-    AWK=/usr/bin/awk                                         \
-    CFLAGS="-std=gnu99 -Wall -pedantic"                      \
-    CXXFLAGS="-Wall -pedantic"                               \
-    ./configure                                              \
-    --prefix=/opt/R/R-${version}
-    ${roptions}
+    (
+	cd R-${version}
+	R_PAPERSIZE=letter                                       \
+	R_BATCHSAVE="--no-save --no-restore"                     \
+	PERL=/usr/bin/perl                                       \
+	R_UNZIPCMD=/usr/bin/unzip                                \
+	R_ZIPCMD=/usr/bin/zip                                    \
+	R_PRINTCMD=/usr/bin/lpr                                  \
+	AWK=/usr/bin/awk                                         \
+	CFLAGS="-std=gnu99 -Wall -pedantic"                      \
+	CXXFLAGS="-Wall -pedantic"                               \
+	./configure                                              \
+	--prefix=/opt/R/R-${version}
+	${roptions}
+    )
 }
 
 Make() {
-    make
+    (
+	cd R-${version}
+	make
+    )
 }
 
 Install() {
-    make install
+    (
+	cd R_${version}
+	make install
+    )
 }
 
 Deploy() {
