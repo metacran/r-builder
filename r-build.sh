@@ -6,7 +6,13 @@ set -x
 export PATH=/usr/local/bin:$PATH
 export CRAN=cran.rstudio.com
 export OS=linux
-if uname -a | grep -q Darwin; then export OS=osx; fi
+export roptions=""
+if uname -a | grep -q Darwin; then
+    export OS=osx
+    roptions=--with-tcl-config=/usr/local/opt/tcl-tk/lib/tclConfig.sh \
+	    --with-tk-config=/usr/local/opt/tcl-tk/lib/tkConfig.sh \
+	    ${roptions}
+fi
 
 GetGFortran() {
     curl -O http://cran.rstudio.com/bin/macosx/tools/gfortran-4.2.3.pkg
@@ -54,9 +60,8 @@ Configure() {
     CFLAGS="-std=gnu99 -Wall -pedantic"                      \
     CXXFLAGS="-Wall -pedantic"                               \
     ./configure                                              \
-    --prefix=/opt/R/R-${version}                             \
-    --with-tcl-config=/usr/local/opt/tcl-tk/lib/tclConfig.sh \
-    --with-tk-config=/usr/local/opt/tcl-tk/lib/tkConfig.sh
+    --prefix=/opt/R/R-${version}
+    ${roptions}
 }
 
 Make() {
