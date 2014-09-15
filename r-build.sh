@@ -115,6 +115,7 @@ Deploy() {
     git fetch -q origin ${CI}
     git checkout ${CI}
 
+    rm -rf *
     cp -r /opt/R/R-${version} .
     git add -A .
 
