@@ -42,7 +42,7 @@ GetRecommended() {
 }
 
 Configure() {
-    mkdir -p /opt/R/R-${version}
+    sudo mkdir -p /opt/R/R-${version}
 
     R_PAPERSIZE=letter                                       \
     R_BATCHSAVE="--no-save --no-restore"                     \
@@ -59,6 +59,7 @@ Configure() {
     --prefix=/opt/R/R-${version}                             \
     --with-tcl-config=/usr/local/opt/tcl-tk/lib/tclConfig.sh \
     --with-tk-config=/usr/local/opt/tcl-tk/lib/tkConfig.sh
+}
 
 Make() {
     make
