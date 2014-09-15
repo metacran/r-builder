@@ -18,6 +18,8 @@ GetDeps() {
 	GetGFortran
     elif [ $OS == "linux" ]; then
 	Retry sudo apt-get -y build-dep r-base
+	Retry sudo apt-get -y install subversion ccache texlive \
+	      texlive-fonts-extra texlive-latex-extra
     fi
 }
 
