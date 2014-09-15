@@ -96,7 +96,7 @@ Make() {
 
 Install() {
     (
-	cd R_${version}
+	cd R-${version}
 	make install
     )
 }
