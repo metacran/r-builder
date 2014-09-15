@@ -53,8 +53,6 @@ Configure() {
     AWK=/usr/bin/awk                                         \
     CFLAGS="-std=gnu99 -Wall -pedantic"                      \
     CXXFLAGS="-Wall -pedantic"                               \
-    FC="gfortran -arch x86_64"                               \
-    F77="gfortran -arch x86_64"                              \
     ./configure                                              \
     --prefix=/opt/R/R-${version}                             \
     --with-tcl-config=/usr/local/opt/tcl-tk/lib/tclConfig.sh \
