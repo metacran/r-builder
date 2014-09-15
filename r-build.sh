@@ -34,6 +34,7 @@ GetSource() {
 
 GetDevelSource() {
     # TODO
+    true
 }
 
 GetRecommended() {
@@ -69,6 +70,7 @@ Install() {
 
 Release() {
     # Do nothing for now
+    true
 }
 
 Retry() {
