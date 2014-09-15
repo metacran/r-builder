@@ -16,8 +16,13 @@ if uname -a | grep -q Darwin; then
 	    ${roptions}
 fi
 
-## TODO: Detect CI
-export CI="semaphore"
+if [ "$DRONE" == "true" ]; then
+    export CI="drone"
+elif [ "$SEMAPHORE" == "true" ]; then
+    export CI="semaphore"
+else
+    export CI="travis"
+fi
 
 export tag=${CI}-${version}
 
@@ -34,6 +39,11 @@ GetDeps() {
 	Retry sudo apt-get -y build-dep r-base
 	Retry sudo apt-get -y install subversion ccache texlive \
 	      texlive-fonts-extra texlive-latex-extra
+    fi
+    if [ $CI == "drone" ]; then
+	sudo add-apt-repository ppa:git-core/ppa
+	sudo apt-get update
+	sudo apt-get install git
     fi
 }
 
