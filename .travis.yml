@@ -1,0 +1,12 @@
+language: c
+
+env:
+  - version=3.1.1
+
+script:
+  - ./r-build.sh
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
