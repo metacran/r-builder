@@ -5,14 +5,21 @@ set -x
 
 export PATH=/usr/local/bin:$PATH
 export CRAN=cran.rstudio.com
-export OS=linux
 export roptions=""
+
+# Detect OS
+export OS=linux
 if uname -a | grep -q Darwin; then
     export OS=osx
     roptions=--with-tcl-config=/usr/local/opt/tcl-tk/lib/tclConfig.sh \
 	    --with-tk-config=/usr/local/opt/tcl-tk/lib/tkConfig.sh \
 	    ${roptions}
 fi
+
+## TODO: Detect CI
+export CI="semaphore"
+
+export tag=${CI}-${version}
 
 GetGFortran() {
     curl -O http://cran.rstudio.com/bin/macosx/tools/gfortran-4.2.3.pkg
@@ -75,10 +82,28 @@ Install() {
     make install
 }
 
-Release() {
-    # Just tar it up, the 'deploy' section in .travis.yml will
-    # deploy it
-    tar czf R-binary-${version}.tar.gz /opt/R/R-${version}
+Deploy() {
+    git config --global user.name "Gabor Csardi"
+    git config --global user.email "csardi.gabor@gmail.com"
+    git config --global push.default matching
+
+    git remote set-url origin https://github.com/gaborcsardi/r-builder
+    git config credential.helper "store --file=.git/credentials"
+    python -c 'import os; print "https://" + os.environ["GH_TOKEN"] + ":@github.com"' > .git/credentials
+
+    git fetch -q origin ${CI}
+    git checkout ${CI}
+
+    cp -r /opr/R/R-${version} .
+    git add -A .
+
+    git commit -q --allow-empty -m "Building R ${version} on ${CI}"
+    git tag -d ${tag} || true
+    git push origin :refs/tags/${tag}
+
+    git tag ${tag}
+    git push -q
+    git push -q --tags
 }
 
 Retry() {
@@ -103,7 +128,7 @@ BuildVersion() {
     Configure
     Make
     Install
-    Release
+    Deploy
 }
 
 BuildDevel() {
@@ -113,7 +138,7 @@ BuildDevel() {
     Configure
     Make
     Install
-    Release
+    Deploy
 }
 
 if [ "$version" == "devel" ]; then
