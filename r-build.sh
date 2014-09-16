@@ -113,9 +113,11 @@ Deploy() {
     python -c 'import os; print "https://" + os.environ["GH_TOKEN"] + ":@github.com"' > .git/credentials
 
     git fetch -q origin ${CI}
-    git checkout ${CI}
-
+    git reset --hard origin/${CI}
     rm -rf *
+    git checkout ${CI}
+    git clean -fdx
+
     cp -r /opt/R/R-${version} .
     git add -A .
 
