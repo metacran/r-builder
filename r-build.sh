@@ -130,9 +130,9 @@ Deploy() {
 	git config --global user.email "csardi.gabor@gmail.com"
 	git config --global push.default matching
 
-	git clone --branch ${branch} https://github.com/gaborcsardi/r-builder _deploy
+	mkdir _deploy
 	cd _deploy
-	rm -rf *
+	git init .
 	cp -r /opt/R/R-${version} .
 	git add -A .
 
