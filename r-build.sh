@@ -35,7 +35,7 @@ export tag=${CI}-${version}
 export branch=${CI}_${version}
 
 CheckDone() {
-    if ! git fetch -q origin $tag 2>/dev/null; then
+    if git fetch -q origin $tag 2>/dev/null; then
 	echo "This R version was already built for this CI."
 	echo "If you want to rebuild it, then remove its tag and branch"
 	exit 0
