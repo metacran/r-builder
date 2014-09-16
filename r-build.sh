@@ -126,8 +126,8 @@ Deploy() {
     git push origin :refs/tags/${tag}
 
     git tag ${tag}
-    git push -qf
-    git push -qf --tags
+    git push -q
+    git push -q --tags
 }
 
 Retry() {
