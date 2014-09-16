@@ -4,7 +4,7 @@ set -e
 set -x
 
 export PATH=/usr/local/bin:$PATH
-export CRAN=http://cran.rstudio.com
+export CRAN=http://cran.r-project.org
 export roptions=""
 
 # Detect OS
@@ -27,7 +27,7 @@ fi
 export tag=${CI}-${version}
 
 GetGFortran() {
-    curl -O http://cran.rstudio.com/bin/macosx/tools/gfortran-4.2.3.pkg
+    curl -O ${CRAN}/bin/macosx/tools/gfortran-4.2.3.pkg
     sudo installer -pkg gfortran-4.2.3.pkg -target /
 }
 
@@ -38,7 +38,7 @@ GetDeps() {
 	sudo apt-get clean
 	sudo add-apt-repository "deb ${CRAN}/bin/linux/ubuntu $(lsb_release -cs)/"
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-	sudo apt-get update
+	Retry sudo apt-get update
 	Retry sudo apt-get -y build-dep r-base
 	Retry sudo apt-get -y install subversion ccache texlive \
 	      texlive-fonts-extra texlive-latex-extra
