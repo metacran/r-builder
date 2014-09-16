@@ -20,8 +20,11 @@ if [ "$DRONE" == "true" ]; then
     export CI="drone"
 elif [ "$SEMAPHORE" == "true" ]; then
     export CI="semaphore"
-else
+elif [ "$TRAVIS" == "true" ]; then
     export CI="travis"
+else
+    echo "Unknown CI"
+    exit 1
 fi
 
 if [ ! -f version ]; then
