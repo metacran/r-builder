@@ -25,7 +25,7 @@ else
     exit 1
 fi
 
-if [ -z "$RVERSION"; ];
+if [ -z "$RVERSION"; ]; then
    echo "RVERSION environment variable is not set, you need to set it"
    exit 1
 fi
@@ -64,13 +64,15 @@ Bootstrap() {
 BootstrapLinux() {
     # Get R from r-builder
     (
-	mkdir -p /opt/R/
+	sudo mkdir -p /opt/R/
+	sudo chown $(id -un):$(id -gn) /opt/R
 	cd /opt/R
-	curl -OL ${RBUILDER}/archive/${CI}-${RVERSION}.zip || \
-	    { echo "This R version is not available for this CI"
-	      exit 1 }
+	if ! curl --fail -OL ${RBUILDER}/archive/${CI}-${RVERSION}.zip; then
+	    echo "This R version is not available for this CI"
+	    exit 1
+	fi
 	unzip ${CI}-${RVERSION}.zip
-	mv r-builder-${CI}-{RVERSION}/R-${RVERSION} .
+	mv r-builder-${CI}-${RVERSION}/R-${RVERSION} .
     )
     export PATH=/opt/R/R-${RVERSION}/bin:$PATH
 
