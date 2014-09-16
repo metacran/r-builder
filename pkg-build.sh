@@ -75,6 +75,9 @@ BootstrapLinux() {
 	mv r-builder-${CI}-${RVERSION}/R-${RVERSION} .
     )
     export PATH=/opt/R/R-${RVERSION}/bin:$PATH
+    echo $PATH
+    ls /opt/R/R-${RVERSION}/bin
+    which R
 
     # Install an R development environment. qpdf is also needed for
     # --as-cran checks:
