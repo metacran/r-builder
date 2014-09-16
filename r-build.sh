@@ -25,6 +25,22 @@ else
 fi
 
 export tag=${CI}-${version}
+export branch=${CI}_${version}
+
+if [ ! -f version ]; then
+    echo "No version file, don't know what to build"
+    exit 1
+fi
+
+version=$(cat version)
+
+CheckDone() {
+    if ! git fetch -q origin $tag 2>/dev/null; then
+	echo "This R version was already built for this CI."
+	echo "If you want to rebuild it, then remove its tag and branch"
+	exit 0
+    fi
+}
 
 GetGFortran() {
     curl -O ${CRAN}/bin/macosx/tools/gfortran-4.2.3.pkg
@@ -111,14 +127,14 @@ Deploy() {
 	git config --global user.email "csardi.gabor@gmail.com"
 	git config --global push.default matching
 
-	git clone --branch ${CI} https://github.com/gaborcsardi/r-builder _deploy
+	git clone --branch ${branch} https://github.com/gaborcsardi/r-builder _deploy
 	cd _deploy
 	rm -rf *
 	cp -r /opt/R/R-${version} .
 	git add -A .
 
 	git remote set-url origin https://github.com/gaborcsardi/r-builder
-	git remote set-branches --add origin ${CI}
+	git remote set-branches --add origin ${branch}
 	git config credential.helper "store --file=.git/credentials"
 	python -c 'import os; print "https://" + os.environ["GH_TOKEN"] + ":@github.com"' > .git/credentials
 
@@ -148,6 +164,7 @@ Retry() {
 }
 
 BuildVersion() {
+    CheckDone
     GetDeps
     GetSource
     CreateInstDir
@@ -169,9 +186,6 @@ BuildDevel() {
 
 if [ "$version" == "devel" ]; then
     BuildDevel
-elif [ "$version" == "" ]; then
-    echo 'version is not set, doing nothing'
-    exit 0
 else
     BuildVersion
 fi
