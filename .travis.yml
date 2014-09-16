@@ -11,3 +11,7 @@ notifications:
 branches:
   only:
     - travis
+
+env:
+  global:
+    secure: DX0K2Bld0uaSAIehbCGhdimzB2ntINOfq4KHjCKIIEh3nHvXyhWIttTrh2S2HhQGQuHLfYUZ5OWOUqLuqCjHVeAV/oDa+eWZzf6OPSqAJAib/wrvZAcUEu/GcbYUH3XVrw/tuZI5NumaDn1aQPuOSK6oGB/DpUmkYTIzWkNcDY0=
