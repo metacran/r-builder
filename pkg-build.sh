@@ -25,7 +25,7 @@ else
     exit 1
 fi
 
-if [ -z "$RVERSION"; ]; then
+if [ -z "$RVERSION" ]; then
    echo "RVERSION environment variable is not set, you need to set it"
    exit 1
 fi
@@ -71,7 +71,7 @@ BootstrapLinux() {
 	    echo "This R version is not available for this CI"
 	    exit 1
 	fi
-	unzip ${CI}-${RVERSION}.zip
+	unzip -q ${CI}-${RVERSION}.zip
 	mv r-builder-${CI}-${RVERSION}/R-${RVERSION} .
     )
     export PATH=/opt/R/R-${RVERSION}/bin:$PATH
