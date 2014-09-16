@@ -36,7 +36,7 @@ fi
 #
 # TODO(craigcitro): Remove this once we can add `/usr/texbin` to the
 # root path.
-PATH="${PATH}:/usr/texbin"
+PATH="/opt/R/R-${RVERSION}/bin:${PATH}:/usr/texbin"
 
 R_BUILD_ARGS=${R_BUILD_ARGS-"--no-build-vignettes --no-manual"}
 R_CHECK_ARGS=${R_CHECK_ARGS-"--no-build-vignettes --no-manual --as-cran"}
@@ -74,10 +74,6 @@ BootstrapLinux() {
 	unzip -q ${CI}-${RVERSION}.zip
 	mv r-builder-${CI}-${RVERSION}/R-${RVERSION} .
     )
-    export PATH=/opt/R/R-${RVERSION}/bin:$PATH
-    echo $PATH
-    ls /opt/R/R-${RVERSION}/bin
-    which R
 
     # Install an R development environment. qpdf is also needed for
     # --as-cran checks:
