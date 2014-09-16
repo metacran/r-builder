@@ -67,7 +67,7 @@ BootstrapLinux() {
 	sudo mkdir -p /opt/R/
 	sudo chown $(id -un):$(id -gn) /opt/R
 	cd /opt/R
-	if ! curl --fail -OL ${RBUILDER}/archive/${CI}-${RVERSION}.zip; then
+	if ! curl --fail -s -OL ${RBUILDER}/archive/${CI}-${RVERSION}.zip; then
 	    echo "This R version is not available for this CI"
 	    exit 1
 	fi
@@ -317,7 +317,7 @@ Retry() {
         fi
     done
     echo "Failed all retries!"
-    exit 1
+    return 1
 }
 
 COMMAND=$1
