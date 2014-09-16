@@ -102,7 +102,7 @@ BootstrapLinuxOptions() {
         # We add a backports PPA for more recent TeX packages.
         sudo add-apt-repository -y "ppa:texlive-backports/ppa"
 
-        Retry sudo apt-get install --no-install-recommends \
+        Retry sudo apt-get -y install --no-install-recommends \
             texlive-base texlive-latex-base texlive-generic-recommended \
             texlive-fonts-recommended texlive-fonts-extra \
             texlive-extra-utils texlive-latex-recommended texlive-latex-extra \
@@ -161,7 +161,7 @@ AptGetInstall() {
     fi
 
     echo "Installing apt package(s) $@"
-    Retry sudo apt-get install "$@"
+    Retry sudo apt-get -y install "$@"
 }
 
 DpkgCurlInstall() {
