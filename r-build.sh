@@ -136,7 +136,7 @@ Deploy() {
 	cp -r /opt/R/R-${version} .
 	git add -A .
 
-	git remote set-url origin https://github.com/gaborcsardi/r-builder
+	git remote add origin https://github.com/gaborcsardi/r-builder
 	git remote set-branches --add origin ${branch}
 	git config credential.helper "store --file=.git/credentials"
 	python -c 'import os; print "https://" + os.environ["GH_TOKEN"] + ":@github.com"' > .git/credentials
