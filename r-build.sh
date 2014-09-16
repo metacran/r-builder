@@ -35,6 +35,7 @@ GetDeps() {
     if [ $OS == "osx" ]; then
 	GetGFortran
     elif [ $OS == "linux" ]; then
+	sudo apt-get clean
 	sudo add-apt-repository "deb ${CRAN}/bin/linux/ubuntu $(lsb_release -cs)/"
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 	sudo apt-get update
@@ -104,30 +105,31 @@ Install() {
 }
 
 Deploy() {
-    git config --global user.name "Gabor Csardi"
-    git config --global user.email "csardi.gabor@gmail.com"
-    git config --global push.default matching
+    (
+	cd /tmp
+	git config --global user.name "Gabor Csardi"
+	git config --global user.email "csardi.gabor@gmail.com"
+	git config --global push.default matching
 
-    git remote set-url origin https://github.com/gaborcsardi/r-builder
-    git config credential.helper "store --file=.git/credentials"
-    python -c 'import os; print "https://" + os.environ["GH_TOKEN"] + ":@github.com"' > .git/credentials
+	git clone --branch ${CI} https://github.com/gaborcsardi/r-builder _deploy
+	cd _deploy
+	rm -rf *
+	cp -r /opt/R/R-${version} .
+	git add -A .
 
-    git fetch -q origin ${CI}
-    git reset --hard origin/${CI}
-    rm -rf *
-    git checkout ${CI}
-    git clean -fdx
+	git remote set-url origin https://github.com/gaborcsardi/r-builder
+	git remote set-branches --add origin ${CI}
+	git config credential.helper "store --file=.git/credentials"
+	python -c 'import os; print "https://" + os.environ["GH_TOKEN"] + ":@github.com"' > .git/credentials
 
-    cp -r /opt/R/R-${version} .
-    git add -A .
+	git commit -q --allow-empty -m "Building R ${version} on ${CI}"
+	git tag -d ${tag} || true
+	git push origin :refs/tags/${tag}
 
-    git commit -q --allow-empty -m "Building R ${version} on ${CI}"
-    git tag -d ${tag} || true
-    git push origin :refs/tags/${tag}
-
-    git tag ${tag}
-    git push -q
-    git push -q --tags
+	git tag ${tag}
+	git push -q
+	git push -q --tags
+    )
 }
 
 Retry() {
