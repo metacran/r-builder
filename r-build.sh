@@ -24,15 +24,15 @@ else
     export CI="travis"
 fi
 
-export tag=${CI}-${version}
-export branch=${CI}_${version}
-
 if [ ! -f version ]; then
     echo "No version file, don't know what to build"
     exit 1
 fi
 
 version=$(cat version)
+
+export tag=${CI}-${version}
+export branch=${CI}_${version}
 
 CheckDone() {
     if ! git fetch -q origin $tag 2>/dev/null; then
