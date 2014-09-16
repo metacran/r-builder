@@ -86,7 +86,7 @@ BootstrapLinux() {
 
     # Update after adding all repositories.  Retry several times to work around
     # flaky connection to Launchpad PPAs.
-    Retry sudo apt-get update -qq
+    Retry sudo apt-get update -y -qq
 
     # Install an R development environment. qpdf is also needed for
     # --as-cran checks:
