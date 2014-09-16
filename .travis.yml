@@ -1,6 +1,7 @@
 language: c
 
 script:
+  - ./get-build-script.sh
   - ./r-build.sh
 
 notifications:
