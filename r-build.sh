@@ -133,6 +133,7 @@ Deploy() {
 	mkdir _deploy
 	cd _deploy
 	git init .
+	git symbolic-ref HEAD refs/heads/${branch}
 	cp -r /opt/R/R-${version} .
 	git add -A .
 
@@ -146,7 +147,7 @@ Deploy() {
 	git push origin :refs/tags/${tag}
 
 	git tag ${tag}
-	git push -q
+	git push -q origin ${branch}
 	git push -q --tags
     )
 }
