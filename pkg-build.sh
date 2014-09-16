@@ -79,7 +79,7 @@ BootstrapLinux() {
     # --as-cran checks:
     #   https://stat.ethz.ch/pipermail/r-help//2012-September/335676.html
     Retry sudo apt-get -y update -qq
-    Retry sudo apt-get -y install --no-install-recommends qpdf
+    Retry sudo apt-get -y install --no-install-recommends qpdf gfortran
 
     # Process options
     BootstrapLinuxOptions
