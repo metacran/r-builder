@@ -27,7 +27,7 @@ fi
 
 if [ -z "$RVERSION"; ];
    echo "RVERSION environment variable is not set, you need to set it"
-   ecit 1
+   exit 1
 fi
 
 # MacTeX installs in a new $PATH entry, and there's no way to force
