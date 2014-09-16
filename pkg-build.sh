@@ -76,21 +76,10 @@ BootstrapLinux() {
     )
     export PATH=/opt/R/R-${RVERSION}/bin:$PATH
 
-    # Set up our CRAN mirror.
-    sudo add-apt-repository "deb ${CRAN}/bin/linux/ubuntu $(lsb_release -cs)/"
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-
-    # Add marutter's c2d4u repository.
-    sudo add-apt-repository -y "ppa:marutter/rrutter"
-    sudo add-apt-repository -y "ppa:marutter/c2d4u"
-
-    # Update after adding all repositories.  Retry several times to work around
-    # flaky connection to Launchpad PPAs.
-    Retry sudo apt-get update -y -qq
-
     # Install an R development environment. qpdf is also needed for
     # --as-cran checks:
     #   https://stat.ethz.ch/pipermail/r-help//2012-September/335676.html
+    Retry sudo apt-get -y update -qq
     Retry sudo apt-get -y install --no-install-recommends qpdf
 
     # Process options
@@ -145,7 +134,7 @@ BootstrapMacOptions() {
 EnsureDevtools() {
     if ! Rscript -e 'if (!("devtools" %in% rownames(installed.packages()))) q(status=1)' ; then
         # Install devtools and testthat.
-        RBinaryInstall devtools testthat
+        RInstall devtools testthat
     fi
 }
 
@@ -202,25 +191,6 @@ BiocInstall() {
 
     echo "Installing R Bioconductor package(s): $@"
     Rscript -e "${R_USE_BIOC_CMDS}"' biocLite(commandArgs(TRUE))' "$@"
-}
-
-RBinaryInstall() {
-    if [[ -z "$#" ]]; then
-        echo "No arguments to r_binary_install"
-        exit 1
-    fi
-
-    if [[ "Linux" != "${OS}" ]] || [[ -n "${FORCE_SOURCE_INSTALL}" ]]; then
-        echo "Fallback: Installing from source"
-        RInstall "$@"
-        return
-    fi
-
-    echo "Installing *binary* R packages: $*"
-    r_packages=$(echo $* | tr '[:upper:]' '[:lower:]')
-    r_debs=$(for r_package in ${r_packages}; do echo -n "r-cran-${r_package} "; done)
-
-    AptGetInstall ${r_debs}
 }
 
 InstallGithub() {
@@ -353,11 +323,6 @@ case $COMMAND in
     ## Install an R dependency from Bioconductor
     "install_bioc"|"bioc_install")
         BiocInstall "$@"
-        ;;
-    ##
-    ## Install an R dependency as a binary (via c2d4u PPA)
-    "install_r_binary"|"r_binary_install")
-        RBinaryInstall "$@"
         ;;
     ##
     ## Install a package from github sources (needs devtools)
