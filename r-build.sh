@@ -37,7 +37,7 @@ GetDeps() {
     elif [ $OS == "linux" ]; then
 	sudo add-apt-repository "deb ${CRAN}/bin/linux/ubuntu $(lsb_release -cs)/"
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
-	Retry sudo apt-get update
+	sudo apt-get update
 	Retry sudo apt-get -y build-dep r-base
 	Retry sudo apt-get -y install subversion ccache texlive \
 	      texlive-fonts-extra texlive-latex-extra
