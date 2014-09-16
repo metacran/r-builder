@@ -57,7 +57,7 @@ Bootstrap() {
     fi
 
     if ! (test -e .Rbuildignore && grep -q 'travis-tool' .Rbuildignore); then
-        echo '^travis-tool\.sh$' >>.Rbuildignore
+        echo '^pkg-build\.sh$' >>.Rbuildignore
     fi
 }
 
