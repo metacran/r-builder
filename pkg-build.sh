@@ -240,6 +240,10 @@ DumpLogs() {
     DumpLogsByExtension "fail"
 }
 
+RunScript() {
+    Rscript "$@"
+}
+
 RunTests() {
     echo "Building with: R CMD build ${R_BUILD_ARGS}"
     R CMD build ${R_BUILD_ARGS} .
@@ -358,4 +362,10 @@ case $COMMAND in
     "dump_logs_by_extension")
         DumpLogsByExtension "$@"
         ;;
+
+    ##
+    ## Run an R script
+    "run_script")
+	RunScript "$@"
+	;;
 esac
