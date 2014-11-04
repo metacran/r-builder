@@ -182,6 +182,7 @@ BuildVersion() {
 }
 
 BuildDevel() {
+    GetDeps
     GetDevelSource
     GetRecommended
     CreateInstDir
