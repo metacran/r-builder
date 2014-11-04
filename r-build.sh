@@ -18,10 +18,13 @@ fi
 
 if [ "$DRONE" == "true" ]; then
     export CI="drone"
+    export REPO_SLUG=$(echo "$DRONE_REPO_SLUG" | sed -s '/github\.com\///')
 elif [ "$SEMAPHORE" == "true" ]; then
     export CI="semaphore"
+    export REPO_SLUG="$SEMAPHORE_REPO_SLUG"
 elif [ "$TRAVIS" == "true" ]; then
     export CI="travis"
+    export REPO_SLUG="$TRAVIS_REPO_SLUG"
 else
     echo "Unknown CI"
     exit 1
@@ -140,7 +143,7 @@ Deploy() {
 	cp -r /opt/R/R-${version} .
 	git add -A .
 
-	git remote add origin https://github.com/gaborcsardi/r-builder
+	git remote add origin https://github.com/"${REPO_SLUG}"
 	git remote set-branches --add origin ${branch}
 	git config credential.helper "store --file=.git/credentials"
 	python -c 'import os; print "https://" + os.environ["GH_TOKEN"] + ":@github.com"' > .git/credentials
