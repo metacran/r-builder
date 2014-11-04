@@ -1,0 +1,17 @@
+: ${JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre}
+: ${R_JAVA_LD_LIBRARY_PATH=${JAVA_HOME}/lib/amd64/server}
+if test -n "/usr/local/lib:/usr/lib/x86_64-linux-gnu"; then
+: ${R_LD_LIBRARY_PATH=${R_HOME}/lib:/usr/local/lib:/usr/lib/x86_64-linux-gnu}
+else
+: ${R_LD_LIBRARY_PATH=${R_HOME}/lib}
+fi
+if test -n "${R_JAVA_LD_LIBRARY_PATH}"; then
+  R_LD_LIBRARY_PATH="${R_LD_LIBRARY_PATH}:${R_JAVA_LD_LIBRARY_PATH}"
+fi
+## This is DYLD_FALLBACK_LIBRARY_PATH on Darwin (OS X) and LD_LIBRARY_PATH elsewhere
+if test -z "${LD_LIBRARY_PATH}"; then
+  LD_LIBRARY_PATH="${R_LD_LIBRARY_PATH}"
+else
+  LD_LIBRARY_PATH="${R_LD_LIBRARY_PATH}:${LD_LIBRARY_PATH}"
+fi
+export LD_LIBRARY_PATH
