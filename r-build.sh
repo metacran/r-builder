@@ -78,8 +78,8 @@ GetSource() {
 }
 
 GetDevelSource() {
-    # TODO
-    true
+    svn checkout --non-interactive \
+	http://svn.r-project.org/R/trunk/ R-devel
 }
 
 GetRecommended() {
