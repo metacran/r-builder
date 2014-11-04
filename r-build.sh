@@ -83,6 +83,7 @@ GetDevelSource() {
 }
 
 GetRecommended() {
+    cd R-${version}
     Retry tools/rsync-recommended
 }
 
