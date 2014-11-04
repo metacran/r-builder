@@ -11,7 +11,7 @@ More will be probably added later.
 ## Available R versions
 
 The most current list of R builds is available from the
-[list of releases](https://github.com/gaborcsardi/r-builder/releases).
+[list of releases](https://github.com/metacran/r-builder/releases).
 
 ## How to use r-builder with your CI
 
@@ -28,4 +28,4 @@ The build script is under development, more soon.
 
 ## Plans
 
-Please see the [issue tracker](https://github.com/gaborcsardi/r-builder).
+Please see the [issue tracker](https://github.com/metacran/r-builder/issues).
