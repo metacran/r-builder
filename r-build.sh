@@ -83,8 +83,10 @@ GetDevelSource() {
 }
 
 GetRecommended() {
-    cd R-${version}
-    Retry tools/rsync-recommended
+    (
+	cd R-${version}
+	Retry tools/rsync-recommended
+    )
 }
 
 CreateInstDir() {
