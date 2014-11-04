@@ -12,6 +12,7 @@ notifications:
 branches:
   only:
     - travis
+    - travis-devel
 
 env:
   global:
