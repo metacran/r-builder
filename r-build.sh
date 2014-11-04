@@ -147,11 +147,8 @@ Deploy() {
 
 	git commit -q --allow-empty -m "Building R ${version} on ${CI}"
 	git tag -d ${tag} || true
-	git push origin :refs/tags/${tag}
-
 	git tag ${tag}
-	git push -q origin ${branch}
-	git push -q --tags
+	git push -f --tags -q origin ${branch}
     )
 }
 
