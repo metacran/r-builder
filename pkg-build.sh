@@ -212,7 +212,7 @@ InstallBiocDeps() {
 
 DumpSysinfo() {
     echo "Dumping system information."
-    R -e '.libPaths(); sessionInfo(); installed.packages()'
+    R -e '.libPaths(); options(width = 90) ; devtools::session_info(); installed.packages()'
 }
 
 DumpLogsByExtension() {
