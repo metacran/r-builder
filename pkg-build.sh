@@ -266,11 +266,12 @@ RunScript() {
 RunBuild() {
     echo "Building with: R CMD build ${R_BUILD_ARGS}"
     R CMD build ${R_BUILD_ARGS} .
-    # We want to grab the version we just built.
-    FILE=$(ls -1t *.tar.gz | head -n 1)
 }
 
 RunCheck() {
+    # We want to grab the version we just built.
+    FILE=$(ls -1t *.tar.gz | head -n 1)
+
     echo "Testing with: R CMD check \"${FILE}\" ${R_CHECK_ARGS}"
     _R_CHECK_CRAN_INCOMING_=${_R_CHECK_CRAN_INCOMING_:-FALSE}
     if [[ "$_R_CHECK_CRAN_INCOMING_" == "FALSE" ]]; then
