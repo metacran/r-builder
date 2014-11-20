@@ -20,7 +20,7 @@ Currently supported R versions:
 * R 3.1.0
 * R 3.0.3
 
-# How to use r-builder with your CI
+# How to use r-builder with your package
 
 ## Travis CI
 
