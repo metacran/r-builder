@@ -263,12 +263,14 @@ RunScript() {
     Rscript "$@"
 }
 
-RunTests() {
+RunBuild() {
     echo "Building with: R CMD build ${R_BUILD_ARGS}"
     R CMD build ${R_BUILD_ARGS} .
     # We want to grab the version we just built.
     FILE=$(ls -1t *.tar.gz | head -n 1)
+}
 
+RunCheck() {
     echo "Testing with: R CMD check \"${FILE}\" ${R_CHECK_ARGS}"
     _R_CHECK_CRAN_INCOMING_=${_R_CHECK_CRAN_INCOMING_:-FALSE}
     if [[ "$_R_CHECK_CRAN_INCOMING_" == "FALSE" ]]; then
@@ -295,6 +297,11 @@ RunTests() {
             exit 1
         fi
     fi
+}
+
+RunTests() {
+    RunBuild
+    RunCheck
 }
 
 Retry() {
@@ -362,7 +369,17 @@ case $COMMAND in
         InstallBiocDeps
         ;;
     ##
+    ## Build the package, R CMD build
+    "run_build")
+        RunBuild
+        ;;
+    ##
     ## Run the actual tests, ie R CMD check
+    "run_check")
+        RunCheck
+        ;;
+    ##
+    ## First build, then run check
     "run_tests")
         RunTests
         ;;
