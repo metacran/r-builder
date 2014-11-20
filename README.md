@@ -99,7 +99,7 @@ stable release.
 
 [r-appveyor](https://github.com/krlmlr/r-appveyor) is an excellent project
 to build and check your R package on Windows, using the
-[Appveyor]((http://appveyor.com) CI.
+[Appveyor](http://appveyor.com) CI.
 
 ## Plans
 
