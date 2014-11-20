@@ -1,0 +1,10 @@
+Package: rbuildertest
+Title: A package to test r-builder
+Version: 1.0.0
+Authors@R: "Gabor Csardi <csardi.gabor@gmail.com> [aut, cre]"
+Description: A package to test r-builder. We test this package
+    using various CI services, and https://github.com/gaborcsardi/r-builder.
+License: MIT + file LICENSE
+LazyData: true
+URL: https://github.com/metacran/r-builder-test
+BugReports: https://github.com/metacran/r-builder-test/issues
