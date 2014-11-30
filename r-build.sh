@@ -19,12 +19,15 @@ fi
 if [ "$DRONE" == "true" ]; then
     export CI="drone"
     export REPO_SLUG=$(echo "$DRONE_REPO_SLUG" | sed -s '/github\.com\///')
+    export ADD_REPO="sudo add-apt-repository -y -s"
 elif [ "$SEMAPHORE" == "true" ]; then
     export CI="semaphore"
     export REPO_SLUG="$SEMAPHORE_REPO_SLUG"
+    export ADD_REPO="sudo add-apt-repository -y -s"
 elif [ "$TRAVIS" == "true" ]; then
     export CI="travis"
     export REPO_SLUG="$TRAVIS_REPO_SLUG"
+    export ADD_REPO="sudo add-apt-repository"
 else
     echo "Unknown CI"
     exit 1
@@ -58,7 +61,7 @@ GetDeps() {
 	GetGFortran
     elif [ $OS == "linux" ]; then
 	sudo apt-get clean
-	sudo add-apt-repository -y -s "deb ${CRAN}/bin/linux/ubuntu $(lsb_release -cs)/"
+	sudo $ADD_REPO "deb ${CRAN}/bin/linux/ubuntu $(lsb_release -cs)/"
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 	(Retry sudo apt-get update) || true
 	Retry sudo apt-get -y build-dep r-base
