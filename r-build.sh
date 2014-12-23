@@ -42,6 +42,7 @@ version=$(cat version)
 
 export tag=${CI}-${version}
 export branch=${CI}_${version}
+export PREFIX=$HOME/R-bin/R-${version}
 
 CheckDone() {
     if git fetch -q origin $tag 2>/dev/null; then
@@ -96,8 +97,8 @@ GetRecommended() {
 }
 
 CreateInstDir() {
-    sudo mkdir -p /opt/R/R-${version}
-    sudo chown -R $(id -un):$(id -gn) /opt/R
+    mkdir -p ${PREFIX}
+    chown -R $(id -un):$(id -gn) ${PREFIX}
 }
 
 Configure() {
@@ -112,8 +113,7 @@ Configure() {
 	AWK=/usr/bin/awk                                         \
 	CFLAGS="-std=gnu99 -Wall -pedantic"                      \
 	CXXFLAGS="-Wall -pedantic"                               \
-	./configure                                              \
-	--prefix=/opt/R/R-${version}
+	./configure --prefix=${PREFIX}                           \
 	${roptions}
     )
 }
@@ -143,7 +143,7 @@ Deploy() {
 	cd _deploy
 	git init .
 	git symbolic-ref HEAD refs/heads/${branch}
-	cp -r /opt/R/R-${version} .
+	cp -r ${PREFIX} .
 	git add -A .
 
 	git remote add origin https://github.com/"${REPO_SLUG}"

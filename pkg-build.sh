@@ -12,6 +12,7 @@ CRAN=${CRAN:-"http://cran.rstudio.com"}
 BIOC=${BIOC:-"http://bioconductor.org/biocLite.R"}
 BIOC_USE_DEVEL=${BIOC_USE_DEVEL:-"TRUE"}
 OS=$(uname -s)
+BINDIR=$HOME/R-bin
 
 PANDOC_VERSION='1.12.4.2'
 PANDOC_DIR="${HOME}/opt"
@@ -40,7 +41,7 @@ fi
 #
 # TODO(craigcitro): Remove this once we can add `/usr/texbin` to the
 # root path.
-PATH="/opt/R/R-${RVERSION}/bin:${PATH}:/usr/texbin"
+PATH="${BINDIR}/R-${RVERSION}/bin:${PATH}:/usr/texbin"
 
 R_BUILD_ARGS=${R_BUILD_ARGS-"--no-build-vignettes --no-manual"}
 R_CHECK_ARGS=${R_CHECK_ARGS-"--no-build-vignettes --no-manual --as-cran"}
@@ -77,9 +78,9 @@ InstallPandoc() {
 BootstrapLinux() {
     # Get R from r-builder
     (
-	sudo mkdir -p /opt/R/
-	sudo chown $(id -un):$(id -gn) /opt/R
-	cd /opt/R
+	mkdir -p ${BINDIR}
+	chown $(id -un):$(id -gn) ${BINDIR}
+	cd ${BINDIR}
 	if ! curl --fail -s -OL ${RBUILDER}/archive/${CI}-${RVERSION}.zip; then
 	    echo "This R version is not available for this CI"
 	    exit 1
