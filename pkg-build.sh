@@ -26,12 +26,12 @@ elif [ "$SEMAPHORE" == "true" ]; then
 elif [ "$TRAVIS" == "true" ]; then
     export CI="travis"
 else
-    echo "Unknown CI"
+    >&2 echo "Unknown CI"
     exit 1
 fi
 
 if [ -z "$RVERSION" ]; then
-   echo "RVERSION environment variable is not set, will use R-devel"
+   >&2 echo "RVERSION environment variable is not set, will use R-devel"
    RVERSION=devel
 fi
 
@@ -57,7 +57,7 @@ Bootstrap() {
     elif [[ "Linux" == "${OS}" ]]; then
         BootstrapLinux
     else
-        echo "Unknown OS: ${OS}"
+        >&2 echo "Unknown OS: ${OS}"
         exit 1
     fi
 
@@ -82,7 +82,7 @@ BootstrapLinux() {
 	chown $(id -un):$(id -gn) ${BINDIR}
 	cd ${BINDIR}
 	if ! curl --fail -s -OL ${RBUILDER}/archive/${CI}-${RVERSION}.zip; then
-	    echo "This R version is not available for this CI"
+	    >&2 echo "This R version is not available for this CI"
 	    exit 1
 	fi
 	unzip -q ${CI}-${RVERSION}.zip
@@ -116,13 +116,13 @@ BootstrapLinuxOptions() {
 }
 
 BootstrapMac() {
-    echo "OSX is not currently supported"
+    >&2 echo "OSX is not currently supported"
     exit 1
 
     # Install from latest CRAN binary build for OS X
     wget ${CRAN}/bin/macosx/R-latest.pkg  -O /tmp/R-latest.pkg
 
-    echo "Installing OS X binary package for R"
+    >&2 echo "Installing OS X binary package for R"
     sudo installer -pkg "/tmp/R-latest.pkg" -target /
     rm "/tmp/R-latest.pkg"
 
@@ -136,7 +136,7 @@ BootstrapMacOptions() {
         MACTEX=mactex-basic.pkg
         wget http://ctan.math.utah.edu/ctan/tex-archive/systems/mac/mactex/$MACTEX -O "/tmp/$MACTEX"
 
-        echo "Installing OS X binary package for MacTeX"
+        >&2 echo "Installing OS X binary package for MacTeX"
         sudo installer -pkg "/tmp/$MACTEX" -target /
         rm "/tmp/$MACTEX"
         # We need a few more packages than the basic package provides; this
@@ -159,31 +159,31 @@ EnsureDevtools() {
 
 AptGetInstall() {
     if [[ "Linux" != "${OS}" ]]; then
-        echo "Wrong OS: ${OS}"
+        >&2 echo "Wrong OS: ${OS}"
         exit 1
     fi
 
     if [[ "" == "$*" ]]; then
-        echo "No arguments to aptget_install"
+        >&2 echo "No arguments to aptget_install"
         exit 1
     fi
 
-    echo "Installing apt package(s) $@"
+    >&2 echo "Installing apt package(s) $@"
     Retry sudo apt-get -y install "$@"
 }
 
 DpkgCurlInstall() {
     if [[ "Linux" != "${OS}" ]]; then
-        echo "Wrong OS: ${OS}"
+        >&2 echo "Wrong OS: ${OS}"
         exit 1
     fi
 
     if [[ "" == "$*" ]]; then
-        echo "No arguments to dpkgcurl_install"
+        >&2 echo "No arguments to dpkgcurl_install"
         exit 1
     fi
 
-    echo "Installing remote package(s) $@"
+    >&2 echo "Installing remote package(s) $@"
     for rf in "$@"; do
         curl -OL ${rf}
         f=$(basename ${rf})
@@ -194,28 +194,28 @@ DpkgCurlInstall() {
 
 RInstall() {
     if [[ "" == "$*" ]]; then
-        echo "No arguments to r_install"
+        >&2 echo "No arguments to r_install"
         exit 1
     fi
 
-    echo "Installing R package(s): $@"
+    >&2 echo "Installing R package(s): $@"
     Rscript -e 'install.packages(commandArgs(TRUE), repos="'"${CRAN}"'")' "$@"
 }
 
 BiocInstall() {
     if [[ "" == "$*" ]]; then
-        echo "No arguments to bioc_install"
+        >&2 echo "No arguments to bioc_install"
         exit 1
     fi
 
-    echo "Installing R Bioconductor package(s): $@"
+    >&2 echo "Installing R Bioconductor package(s): $@"
     Rscript -e "${R_USE_BIOC_CMDS}"' biocLite(commandArgs(TRUE))' "$@"
 }
 
 InstallGithub() {
     EnsureDevtools
 
-    echo "Installing GitHub packages: $@"
+    >&2 echo "Installing GitHub packages: $@"
     # Install the package.
     Rscript -e 'library(devtools); library(methods); options(repos=c(CRAN="'"${CRAN}"'")); install_github(commandArgs(TRUE), build_vignettes = FALSE)' "$@"
 }
@@ -231,20 +231,20 @@ InstallBiocDeps() {
 }
 
 DumpSysinfo() {
-    echo "Dumping system information."
+    >&2 echo "Dumping system information."
     R -e '.libPaths(); options(width = 90) ; devtools::session_info(); installed.packages()'
 }
 
 DumpLogsByExtension() {
     if [[ -z "$1" ]]; then
-        echo "dump_logs_by_extension requires exactly one argument, got: $@"
+        >&2 echo "dump_logs_by_extension requires exactly one argument, got: $@"
         exit 1
     fi
     extension=$1
     shift
     package=$(find . -maxdepth 1 -name "*.Rcheck" -type d)
     if [[ ${#package[@]} -ne 1 ]]; then
-        echo "Could not find package Rcheck directory, skipping log dump."
+        >&2 echo "Could not find package Rcheck directory, skipping log dump."
         exit 0
     fi
     for name in $(find "${package}" -type f -name "*${extension}"); do
@@ -265,7 +265,7 @@ RunScript() {
 }
 
 RunBuild() {
-    echo "Building with: R CMD build ${R_BUILD_ARGS}"
+    >&2 echo "Building with: R CMD build ${R_BUILD_ARGS}"
     R CMD build ${R_BUILD_ARGS} .
 }
 
@@ -273,29 +273,29 @@ RunCheck() {
     # We want to grab the version we just built.
     FILE=$(ls -1t *.tar.gz | head -n 1)
 
-    echo "Testing with: R CMD check \"${FILE}\" ${R_CHECK_ARGS}"
+    >&2 echo "Testing with: R CMD check \"${FILE}\" ${R_CHECK_ARGS}"
     _R_CHECK_CRAN_INCOMING_=${_R_CHECK_CRAN_INCOMING_:-FALSE}
     if [[ "$_R_CHECK_CRAN_INCOMING_" == "FALSE" ]]; then
-        echo "(CRAN incoming checks are off)"
+        >&2 echo "(CRAN incoming checks are off)"
     fi
     _R_CHECK_CRAN_INCOMING_=${_R_CHECK_CRAN_INCOMING_} R CMD check "${FILE}" ${R_CHECK_ARGS}
 
     # Check reverse dependencies
     if [[ -n "$R_CHECK_REVDEP" ]]; then
-        echo "Checking reverse dependencies"
+        >&2 echo "Checking reverse dependencies"
         Rscript -e 'library(devtools); checkOutput <- unlist(revdep_check(as.package(".")$package));if (!is.null(checkOutput)) {print(data.frame(pkg = names(checkOutput), error = checkOutput));for(i in seq_along(checkOutput)){;cat("\n", names(checkOutput)[i], " Check Output:\n  ", paste(readLines(regmatches(checkOutput[i], regexec("/.*\\.out", checkOutput[i]))[[1]]), collapse = "\n  ", sep = ""), "\n", sep = "")};q(status = 1, save = "no")}'
     fi
 
     # Create binary package (currently Windows only)
     if [[ "${OS:0:5}" == "MINGW" ]]; then
-        echo "Creating binary package"
+        >&2 echo "Creating binary package"
         R CMD INSTALL --build "${FILE}"
     fi
 
     if [[ -n "${WARNINGS_ARE_ERRORS}" ]]; then
         if DumpLogsByExtension "00check.log" | grep -q WARNING; then
-            echo "Found warnings, treated as errors."
-            echo "Clear or unset the WARNINGS_ARE_ERRORS environment variable to ignore warnings."
+            >&2 echo "Found warnings, treated as errors."
+            >&2 echo "Clear or unset the WARNINGS_ARE_ERRORS environment variable to ignore warnings."
             exit 1
         fi
     fi
@@ -306,23 +306,27 @@ RunTests() {
     RunCheck
 }
 
+RPath() {
+    echo "${BINDIR}/R-${RVERSION}/bin"
+}
+
 Retry() {
     if "$@"; then
         return 0
     fi
     for wait_time in 5 20 30 60; do
-        echo "Command failed, retrying in ${wait_time} ..."
+        >&2 echo "Command failed, retrying in ${wait_time} ..."
         sleep ${wait_time}
         if "$@"; then
             return 0
         fi
     done
-    echo "Failed all retries!"
+    >&2 echo "Failed all retries!"
     return 1
 }
 
 COMMAND=$1
-echo "Running command: ${COMMAND}"
+>&2 echo "Running command: ${COMMAND}"
 shift
 case $COMMAND in
     ##
@@ -405,5 +409,11 @@ case $COMMAND in
     ## Run an R script
     "run_script")
 	RunScript "$@"
+	;;
+
+    ##
+    ## Print the R bin path
+    "r_path")
+	RPath "$@"
 	;;
 esac
