@@ -107,14 +107,16 @@ BootstrapLinux() {
 
 BootstrapLinuxOptions() {
     if [[ -n "$BOOTSTRAP_LATEX" ]]; then
-	mkdir -p ${BINDIR}
-	chown $(id -un):$(id -gn) ${BINDIR}
-	cd ${BINDIR}
-	if ! curl --fail -s -OL https://github.com/metacran/r-travis-texlive/archive/${CI}.zip; then
-	    >&2 echo "Binary LaTeX not available"
-	    exit 1
-	fi
-	unzip -q ${CI}.zip
+	(
+	    mkdir -p ${BINDIR}
+	    chown $(id -un):$(id -gn) ${BINDIR}
+	    cd ${BINDIR}
+	    if ! curl --fail -s -OL https://github.com/metacran/r-travis-texlive/archive/${CI}.zip; then
+		>&2 echo "Binary LaTeX not available"
+		exit 1
+	    fi
+	    unzip -q ${CI}.zip
+	)
     fi
     if [[ -n "$BOOTSTRAP_PANDOC" ]]; then
         InstallPandoc 'linux/debian/x86_64'
