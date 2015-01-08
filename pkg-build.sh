@@ -116,6 +116,7 @@ BootstrapLinuxOptions() {
 		exit 1
 	    fi
 	    unzip -q ${CI}.zip
+	    mv r-travis-texlive-${CI}/texlive .
 	)
     fi
     if [[ -n "$BOOTSTRAP_PANDOC" ]]; then
