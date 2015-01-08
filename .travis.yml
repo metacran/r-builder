@@ -2,7 +2,7 @@
 language: c
 
 before_install:
-  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/bintex/pkg-build.sh
   - chmod 755 pkg-build.sh
   - cp pkg-build.sh rbuildertest
   - cd rbuildertest
