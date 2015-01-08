@@ -18,6 +18,9 @@ script:
 after_failure:
   - ./pkg-build.sh dump_logs
 
+after_success:
+  - ./pkg-build.sh dump_logs
+
 notifications:
   email:
     on_success: change
