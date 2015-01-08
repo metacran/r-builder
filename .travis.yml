@@ -32,3 +32,5 @@ env:
     - RVERSION=devel
   global:
     - BOOTSTRAP_LATEX=true
+    - R_BUILD_ARGS=" "
+    - R_CHECK_ARGS="--as-cran"
