@@ -43,6 +43,12 @@ fi
 # root path.
 PATH="${BINDIR}/R-${RVERSION}/bin:${PATH}:/usr/texbin"
 
+# PATH for TeXLive
+if [ -d "$BINDIR/texlive/bin" ]; then
+    TEXBINDIR=$(ls $BINDIR/texlive/bin | head -1)
+    export PATH="$BINDIR/texlive/bin/$TEXBINDIR:$PATH"
+fi
+
 R_BUILD_ARGS=${R_BUILD_ARGS-"--no-build-vignettes --no-manual"}
 R_CHECK_ARGS=${R_CHECK_ARGS-"--no-build-vignettes --no-manual --as-cran"}
 
@@ -101,14 +107,14 @@ BootstrapLinux() {
 
 BootstrapLinuxOptions() {
     if [[ -n "$BOOTSTRAP_LATEX" ]]; then
-        # We add a backports PPA for more recent TeX packages.
-        sudo add-apt-repository -y "ppa:texlive-backports/ppa"
-
-        Retry sudo apt-get -y install --no-install-recommends \
-            texlive-base texlive-latex-base texlive-generic-recommended \
-            texlive-fonts-recommended texlive-fonts-extra \
-            texlive-extra-utils texlive-latex-recommended texlive-latex-extra \
-            texinfo lmodern
+	mkdir -p ${BINDIR}
+	chown $(id -un):$(id -gn) ${BINDIR}
+	cd ${BINDIR}
+	if ! curl --fail -s -OL https://github.com/metacran/r-travis-texlive/archive/${CI}.zip; then
+	    >&2 echo "Binary LaTeX not available"
+	    exit 1
+	fi
+	unzip -q ${CI}.zip
     fi
     if [[ -n "$BOOTSTRAP_PANDOC" ]]; then
         InstallPandoc 'linux/debian/x86_64'
