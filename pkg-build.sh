@@ -278,9 +278,23 @@ RunBuild() {
     R CMD build ${R_BUILD_ARGS} .
 }
 
+BuildManual() {
+    (
+	FILE=$(ls -1t *.tar.gz | head -n 1)
+	cp $FILE /tmp
+	cd /tmp
+	tar xzf $FILE
+	R CMD Rd2pdf ${FILE%%_*}
+    )
+}
+
 RunCheck() {
     # We want to grab the version we just built.
     FILE=$(ls -1t *.tar.gz | head -n 1)
+
+    # This is a workaround for an R bug, check reports LaTeX
+    # errors, even if there are none
+    BuildManual || true
 
     >&2 echo "Testing with: R CMD check \"${FILE}\" ${R_CHECK_ARGS}"
     _R_CHECK_CRAN_INCOMING_=${_R_CHECK_CRAN_INCOMING_:-FALSE}
