@@ -29,7 +29,7 @@ elif [ "$TRAVIS" == "true" ]; then
     export REPO_SLUG="$TRAVIS_REPO_SLUG"
     export ADD_REPO="sudo add-apt-repository"
     roptions=--without-system-pcre --without-system-zlib \
-	    --without-system-bzlib ${roptions}"
+	    --without-system-bzlib ${roptions}
 else
     echo "Unknown CI"
     exit 1
