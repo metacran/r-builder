@@ -264,6 +264,10 @@ RunScript() {
     Rscript "$@"
 }
 
+RunMake() {
+    make "$@"
+}
+
 RunBuild() {
     >&2 echo "Building with: R CMD build ${R_BUILD_ARGS}"
     R CMD build ${R_BUILD_ARGS} .
@@ -409,6 +413,12 @@ case $COMMAND in
     ## Run an R script
     "run_script")
 	RunScript "$@"
+	;;
+
+    ##
+    ## Run make
+    "make")
+	RunMake "$@"
 	;;
 
     ##
