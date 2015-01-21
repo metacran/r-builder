@@ -247,7 +247,7 @@ DumpLogsByExtension() {
         >&2 echo "Could not find package Rcheck directory, skipping log dump."
         exit 0
     fi
-    for name in $(find "${package}" -type f -name "*${extension}"); do
+    for name in $(find "${package}" -type f -name "*.${extension}"); do
         echo ">>> Filename: ${name} <<<"
         cat ${name}
     done
