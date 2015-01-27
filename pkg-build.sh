@@ -235,22 +235,30 @@ DumpSysinfo() {
     R -e '.libPaths(); options(width = 90) ; devtools::session_info(); installed.packages()'
 }
 
+DumpByPattern() {
+    if [[ -z "$1" ]]; then
+        >&2 echo "dump_by_pattern requires exactly one argument, got: $@"
+        exit 1
+    fi
+    pattern=$1
+    shift
+    package=$(find . -maxdepth 1 -name "*.Rcheck" -type d)
+    if [[ ${#package[@]} -ne 1 ]]; then
+        >&2 echo "Could not find package Rcheck directory, skipping dump."
+        exit 0
+    fi
+    for name in $(find "${package}" -type f -name "${pattern}"); do
+        echo ">>> Filename: ${name} <<<"
+        cat ${name}
+    done
+}
+
 DumpLogsByExtension() {
     if [[ -z "$1" ]]; then
         >&2 echo "dump_logs_by_extension requires exactly one argument, got: $@"
         exit 1
     fi
-    extension=$1
-    shift
-    package=$(find . -maxdepth 1 -name "*.Rcheck" -type d)
-    if [[ ${#package[@]} -ne 1 ]]; then
-        >&2 echo "Could not find package Rcheck directory, skipping log dump."
-        exit 0
-    fi
-    for name in $(find "${package}" -type f -name "*.${extension}"); do
-        echo ">>> Filename: ${name} <<<"
-        cat ${name}
-    done
+    DumpByPattern "*.$1"
 }
 
 DumpLogs() {
