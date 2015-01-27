@@ -416,6 +416,11 @@ case $COMMAND in
     "dump_logs_by_extension")
         DumpLogsByExtension "$@"
         ;;
+    ##
+    ## Dump selected files by filename pattern
+    "dump_by_pattern")
+        DumpByPattern "$@"
+        ;;
 
     ##
     ## Run an R script
