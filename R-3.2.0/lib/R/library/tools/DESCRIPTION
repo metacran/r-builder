@@ -1,0 +1,10 @@
+Package: tools
+Version: 3.2.0
+Priority: base
+Title: Tools for Package Development
+Author: R Core Team
+Maintainer: R Core Team <R-core@r-project.org>
+Description: Tools for package development, administration and documentation.
+License: Part of R 3.2.0
+Suggests: XML
+Built: R 3.2.0; x86_64-unknown-linux-gnu; 2015-04-22 15:10:06 UTC; unix
