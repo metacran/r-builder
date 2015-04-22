@@ -106,6 +106,7 @@ GetLzma() {
     (
 	mkdir -p extra
 	cd extra
+	sudo apt-get install autopoint
 	apt-get source liblzma5
 	cd `find . -name xz-utils-"*" -type d`
 	./autogen.sh
