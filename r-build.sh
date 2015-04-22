@@ -108,6 +108,7 @@ GetLzma() {
 	cd extra
 	apt-get source liblzma5
 	cd `find . -name xz-utils-"*" -type d`
+	./autogen.sh
 	./configure --prefix=${PREFIX}
 	make
 	make install
