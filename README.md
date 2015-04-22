@@ -15,6 +15,8 @@ The currently supported CIs are:
 
 Currently supported R versions:
 * R-devel, built hourly.
+* R 3.2.0
+* R 3.1.3
 * R 3.1.2
 * R 3.1.1
 * R 3.1.0
