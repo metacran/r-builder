@@ -28,7 +28,7 @@ elif [ "$TRAVIS" == "true" ]; then
     export CI="travis"
     export REPO_SLUG="$TRAVIS_REPO_SLUG"
     export ADD_REPO="sudo add-apt-repository"
-    roptions="--without-system-pcre --without-system-zlib --without-system-bzlib --without-system-xz ${roptions}"
+    roptions="--without-system-pcre ${roptions}"
 else
     echo "Unknown CI"
     exit 1
@@ -77,6 +77,55 @@ GetDeps() {
     fi
 }
 
+GetZlib() {
+    (
+	mkdir -p extra
+	cd extra
+	wget http://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib_1.2.8.dfsg.orig.tar.gz
+	tar xzf zlib_*.tar.gz
+	cd `find . -name zlib-"*" -type d`
+	./configure --prefix=${PREFIX}
+	make
+	make install
+    )
+}
+
+GetBzip2() {
+    (
+	mkdir -p extra
+	cd extra
+	apt-get source bzip2
+	cd `find . -name bzip2-"*" -type d`
+	sed -i.bak 's@^PREFIX=.*$@PREFIX='${PREFIX}@ Makefile
+	make
+	make install
+    )
+}
+
+GetLzma() {
+    (
+	mkdir -p extra
+	cd extra
+	apt-get source liblzma5
+	cd `find . -name xz-utils-"*" -type d`
+	./configure --prefix=${PREFIX}
+	make
+	make install
+    )
+}
+
+GetCompiledDeps() {
+    if [ $OS == "osx"]; then
+	true
+    elif [ $OS == "linux" ]; then
+	if [ $CI == "travis" ]; then
+	    GetZlib
+	    GetBzip2
+	    GetLzma
+	fi
+    fi
+}
+
 GetSource() {
     rm -rf R-${version} R-${version}.tar.gz
     major=$(echo $version | sed 's/\..*$//')
@@ -114,6 +163,9 @@ Configure() {
 	AWK=/usr/bin/awk                                         \
 	CFLAGS="-std=gnu99 -Wall -pedantic"                      \
 	CXXFLAGS="-Wall -pedantic"                               \
+	LIBS="-lz -lbz2 -llzma"                                  \
+	CPPFLAGS="-I $HOME/R-bin/R-${version}/include"           \
+	LDFLAGS="-L $HOME/R-bin/R-${version}/lib"                \
 	./configure --prefix=${PREFIX}                           \
 	${roptions}
     )
@@ -177,6 +229,7 @@ Retry() {
 BuildVersion() {
     CheckDone
     GetDeps
+    GetCompiledDeps
     GetSource
     CreateInstDir
     Configure
@@ -187,6 +240,7 @@ BuildVersion() {
 
 BuildDevel() {
     GetDeps
+    GetCompiledDeps
     GetDevelSource
     GetRecommended
     CreateInstDir
