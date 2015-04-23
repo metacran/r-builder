@@ -44,3 +44,6 @@ addons:
     - texlive-latex-recommended
     - texlive-latex-extra
     - texinfo
+
+cache:
+  - apt
