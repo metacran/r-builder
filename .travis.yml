@@ -1,9 +1,9 @@
 
 language: c
-sudo: required
+sudo: false
 
 before_install:
-  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
+  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/docker/pkg-build.sh
   - chmod 755 pkg-build.sh
   - cp pkg-build.sh rbuildertest
   - cd rbuildertest
@@ -30,3 +30,17 @@ env:
     - RVERSION=release
     - RVERSION=devel
  
+addons:
+  apt:
+    packages:
+    - pandoc
+    - gfortran
+    - texlive-base
+    - texlive-latex-base
+    - texlive-generic-recommended
+    - texlive-fonts-recommended
+    - texlive-fonts-extra
+    - texlive-extra-utils
+    - texlive-latex-recommended
+    - texlive-latex-extra
+    - texinfo

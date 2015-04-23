@@ -14,10 +14,6 @@ BIOC_USE_DEVEL=${BIOC_USE_DEVEL:-"TRUE"}
 OS=$(uname -s)
 BINDIR=$HOME/R-bin
 
-PANDOC_VERSION='1.12.4.2'
-PANDOC_DIR="${HOME}/opt"
-PANDOC_URL="https://s3.amazonaws.com/rstudio-buildtools/pandoc-${PANDOC_VERSION}.zip"
-
 RVERSIONS_URL="http://rversions.r-pkg.org/r-"
 
 ## Detect CI
@@ -75,15 +71,6 @@ Bootstrap() {
     if ! (test -e .Rbuildignore && grep -q 'travis-tool' .Rbuildignore); then
         echo '^pkg-build\.sh$' >>.Rbuildignore
     fi
-}
-
-InstallPandoc() {
-    local os_path="$1"
-    mkdir -p "${PANDOC_DIR}"
-    curl -o /tmp/pandoc-${PANDOC_VERSION}.zip ${PANDOC_URL}
-    unzip -j /tmp/pandoc-${PANDOC_VERSION}.zip "pandoc-${PANDOC_VERSION}/${os_path}/pandoc" -d "${PANDOC_DIR}"
-    chmod +x "${PANDOC_DIR}/pandoc"
-    sudo ln -s "${PANDOC_DIR}/pandoc" /usr/local/bin
 }
 
 BootstrapLinux() {
@@ -163,9 +150,6 @@ BootstrapMacOptions() {
         sudo tlmgr update --self
         sudo tlmgr install inconsolata upquote courier courier-scaled helvetic
     fi
-    if [[ -n "$BOOTSTRAP_PANDOC" ]]; then
-        InstallPandoc 'mac'
-    fi
 }
 
 EnsureDevtools() {
@@ -173,41 +157,6 @@ EnsureDevtools() {
         # Install devtools and testthat.
         RInstall devtools testthat
     fi
-}
-
-AptGetInstall() {
-    if [[ "Linux" != "${OS}" ]]; then
-        >&2 echo "Wrong OS: ${OS}"
-        exit 1
-    fi
-
-    if [[ "" == "$*" ]]; then
-        >&2 echo "No arguments to aptget_install"
-        exit 1
-    fi
-
-    >&2 echo "Installing apt package(s) $@"
-    Retry sudo apt-get -y install "$@"
-}
-
-DpkgCurlInstall() {
-    if [[ "Linux" != "${OS}" ]]; then
-        >&2 echo "Wrong OS: ${OS}"
-        exit 1
-    fi
-
-    if [[ "" == "$*" ]]; then
-        >&2 echo "No arguments to dpkgcurl_install"
-        exit 1
-    fi
-
-    >&2 echo "Installing remote package(s) $@"
-    for rf in "$@"; do
-        curl -OL ${rf}
-        f=$(basename ${rf})
-        sudo dpkg -i ${f}
-        rm -v ${f}
-    done
 }
 
 RInstall() {
@@ -379,16 +328,6 @@ case $COMMAND in
     ## Ensure devtools is loaded (implicitly called)
     "install_devtools"|"devtools_install")
         EnsureDevtools
-        ;;
-    ##
-    ## Install a binary deb package via apt-get
-    "install_aptget"|"aptget_install")
-        AptGetInstall "$@"
-        ;;
-    ##
-    ## Install a binary deb package via a curl call and local dpkg -i
-    "install_dpkgcurl"|"dpkgcurl_install")
-        DpkgCurlInstall "$@"
         ;;
     ##
     ## Install an R dependency from CRAN
