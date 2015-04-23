@@ -40,7 +40,7 @@ GetRVersion() {
 if [ -z "$RVERSION" ]; then
    >&2 echo "RVERSION environment variable is not set, will use R-devel"
    RVERSION=devel
-elif [ "$RVERSION" == "release" -o "$RVERSION" == "oldrel"]; then
+elif [ "$RVERSION" == "release" -o "$RVERSION" == "oldrel" ]; then
     >&2 printf "%s" "r-${RVERSION} corresponds to R version "
     GetRVersion
     >&2 echo ${RVERSION}
