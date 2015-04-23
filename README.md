@@ -15,12 +15,17 @@ The currently supported CIs are:
 
 Currently supported R versions:
 * R-devel, built hourly.
+* R-release, refers to the current stable release
+* R-oldrel, refers to last release from the previous minor version
 * R 3.2.0
 * R 3.1.3
 * R 3.1.2
 * R 3.1.1
 * R 3.1.0
 * R 3.0.3
+
+We recommend that you test your package with `R-devel`, `R-release` and `R-oldrel`.
+CRAN maintainers run their tests on these versions as well.
 
 ## Status for R-devel builds
 
