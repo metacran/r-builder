@@ -1,9 +1,7 @@
 
 # R+CI
 
-Check your R package with multiple versions of R, on Travis or Semaphore.
-Very much like [r-travis](https://github.com/craigcitro/r-travis), but
-supporting multiple R versions, including R-devel.
+Check your R package with multiple versions of R, including R-devel, on Travis or Semaphore.
 
 ## CIs
 
