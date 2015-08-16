@@ -76,7 +76,8 @@ GetDeps() {
 	sudo apt-get install git
     fi
     if [ $CI == "travis" ]; then
-	sudo add-apt-repository ppa:ubuntu-lxc/buildd-backports
+	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7635B973
+	sudo add-apt-repository -y ppa:ubuntu-lxc/buildd-backports
 	sudo apt-get update
 	sudo apt-get install -y curl libcurl4-openssl-dev
     fi
