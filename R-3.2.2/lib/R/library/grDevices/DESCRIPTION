@@ -1,0 +1,9 @@
+Package: grDevices
+Version: 3.2.2
+Priority: base
+Title: The R Graphics Devices and Support for Colours and Fonts
+Author: R Core Team and contributors worldwide
+Maintainer: R Core Team <R-core@r-project.org>
+Description: Graphics devices and support for base and grid graphics.
+License: Part of R 3.2.2
+Built: R 3.2.2; x86_64-pc-linux-gnu; 2015-08-16 09:10:35 UTC; unix
