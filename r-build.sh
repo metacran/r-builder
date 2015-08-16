@@ -75,6 +75,9 @@ GetDeps() {
 	sudo apt-get update
 	sudo apt-get install git
     fi
+    if [ $CI == "travis" ]; then
+	sudo apt-get install libcurl4-openssl-dev
+    fi
 }
 
 GetZlib() {
