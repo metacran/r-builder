@@ -129,7 +129,7 @@ GetCompiledDeps() {
 	if [ $CI == "travis" ]; then
 	    GetZlib
 	    GetBzip2
-	    GetLzma
+#	    GetLzma
 	fi
     fi
 }
