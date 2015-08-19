@@ -4,7 +4,7 @@ set -e
 set -x
 
 export PATH=/usr/local/bin:$PATH
-export CRAN=http://cran.r-project.org
+export CRAN=https://cran.r-project.org
 export roptions=""
 
 # Detect OS
