@@ -106,7 +106,7 @@ BootstrapLinux() {
     Retry sudo apt-get -y update -qq
     Retry sudo apt-get -y install --no-install-recommends qpdf gfortran
 
-    if [ $CI == "travis" -a $RVERSION == "devel" ]; then
+    if [ $CI = "travis" -a $RVERSION = "devel" ]; then
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7635B973
 	sudo add-apt-repository -y ppa:ubuntu-lxc/buildd-backports
 	sudo apt-get update
