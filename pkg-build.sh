@@ -8,7 +8,7 @@ set -e
 set -x
 
 RBUILDER=https://github.com/gaborcsardi/r-builder
-CRAN=${CRAN:-"https://cran.rstudio.com"}
+CRAN=${CRAN:-"http://cran.rstudio.com"}
 BIOC=${BIOC:-"http://bioconductor.org/biocLite.R"}
 BIOC_USE_DEVEL=${BIOC_USE_DEVEL:-"TRUE"}
 OS=$(uname -s)
