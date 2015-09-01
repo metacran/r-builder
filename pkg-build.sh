@@ -22,11 +22,11 @@ RVERSIONS_URL="http://rversions.r-pkg.org/r-"
 
 ## Detect CI
 if [ "$DRONE" == "true" ]; then
-    export CI="drone"
+    export CI_NAME="drone"
 elif [ "$SEMAPHORE" == "true" ]; then
-    export CI="semaphore"
+    export CI_NAME="semaphore"
 elif [ "$TRAVIS" == "true" ]; then
-    export CI="travis"
+    export CI_NAME="travis"
 else
     >&2 echo "Unknown CI"
     exit 1
@@ -92,12 +92,12 @@ BootstrapLinux() {
 	mkdir -p ${BINDIR}
 	chown $(id -un):$(id -gn) ${BINDIR}
 	cd ${BINDIR}
-	if ! curl --fail -s -OL ${RBUILDER}/archive/${CI}-${RVERSION}.zip; then
+	if ! curl --fail -s -OL ${RBUILDER}/archive/${CI_NAME}-${RVERSION}.zip; then
 	    >&2 echo "This R version is not available for this CI"
 	    exit 1
 	fi
-	unzip -q ${CI}-${RVERSION}.zip
-	mv r-builder-${CI}-${RVERSION}/R-${RVERSION} .
+	unzip -q ${CI_NAME}-${RVERSION}.zip
+	mv r-builder-${CI_NAME}-${RVERSION}/R-${RVERSION} .
     )
 
     # Install an R development environment. qpdf is also needed for
@@ -106,7 +106,7 @@ BootstrapLinux() {
     Retry sudo apt-get -y update -qq
     Retry sudo apt-get -y install --no-install-recommends qpdf gfortran
 
-    if [ $CI = "travis" -a $RVERSION = "devel" ]; then
+    if [ $CI_NAME = "travis" -a $RVERSION = "devel" ]; then
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7635B973
 	sudo add-apt-repository -y ppa:ubuntu-lxc/buildd-backports
 	sudo apt-get update
