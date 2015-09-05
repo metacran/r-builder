@@ -17,15 +17,15 @@ if uname -a | grep -q Darwin; then
 fi
 
 if [ "$DRONE" == "true" ]; then
-    export CI="drone"
+    export CI_NAME="drone"
     export REPO_SLUG=$(echo "$DRONE_REPO_SLUG" | sed -s '/github\.com\///')
     export ADD_REPO="sudo add-apt-repository -y -s"
 elif [ "$SEMAPHORE" == "true" ]; then
-    export CI="semaphore"
+    export CI_NAME="semaphore"
     export REPO_SLUG="$SEMAPHORE_REPO_SLUG"
     export ADD_REPO="sudo add-apt-repository -y -s"
 elif [ "$TRAVIS" == "true" ]; then
-    export CI="travis"
+    export CI_NAME="travis"
     export REPO_SLUG="$TRAVIS_REPO_SLUG"
     export ADD_REPO="sudo add-apt-repository"
     roptions="--without-system-pcre ${roptions}"
@@ -41,8 +41,8 @@ fi
 
 version=$(cat version)
 
-export tag=${CI}-${version}
-export branch=${CI}_${version}
+export tag=${CI_NAME}-${version}
+export branch=${CI_NAME}_${version}
 export PREFIX=$HOME/R-bin/R-${version}
 
 CheckDone() {
@@ -70,12 +70,12 @@ GetDeps() {
 	Retry sudo apt-get -y install subversion ccache texlive \
 	      texlive-fonts-extra texlive-latex-extra
     fi
-    if [ $CI == "drone" ]; then
+    if [ $CI_NAME == "drone" ]; then
 	sudo add-apt-repository ppa:git-core/ppa
 	sudo apt-get update
 	sudo apt-get install git
     fi
-    if [ $CI == "travis" ]; then
+    if [ $CI_NAME == "travis" ]; then
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7635B973
 	sudo add-apt-repository -y ppa:ubuntu-lxc/buildd-backports
 	sudo apt-get update
@@ -126,7 +126,7 @@ GetCompiledDeps() {
     if [ $OS == "osx"]; then
 	true
     elif [ $OS == "linux" ]; then
-	if [ $CI == "travis" ]; then
+	if [ $CI_NAME == "travis" ]; then
 	    GetZlib
 	    GetBzip2
 #	    GetLzma
@@ -212,7 +212,7 @@ Deploy() {
 	git config credential.helper "store --file=.git/credentials"
 	python -c 'import os; print "https://" + os.environ["GH_TOKEN"] + ":@github.com"' > .git/credentials
 
-	git commit -q --allow-empty -m "Building R ${version} on ${CI}"
+	git commit -q --allow-empty -m "Building R ${version} on ${CI_NAME}"
 	git tag -d ${tag} || true
 	git tag ${tag}
 	git push -f --tags -q origin ${branch}
