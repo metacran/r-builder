@@ -250,6 +250,7 @@ InstallBiocDeps() {
 
 DumpSysinfo() {
     >&2 echo "Dumping system information."
+    EnsureDevtools
     R -e '.libPaths(); options(width = 90) ; devtools::session_info(); installed.packages()'
 }
 
