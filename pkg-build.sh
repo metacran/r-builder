@@ -397,7 +397,7 @@ case $COMMAND in
         ;;
     ##
     ## Install a specific version of an R dependency from CRAN 
-    "r_install_version")
+    "r_install_version"|"install_r_version")
         RInstallVersion "$@"
         ;;
     ##
