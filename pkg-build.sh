@@ -220,6 +220,16 @@ RInstall() {
     Rscript -e 'install.packages(commandArgs(TRUE), repos="'"${CRAN}"'")' "$@"
 }
 
+RInstallVersion() {
+    EnsureDevtools
+    if [[ "" == "$*" ]]; then
+        >&2 echo "No arguments to r_install_version"
+        exit 1
+    fi
+    >&2 echo "Installing R package(s): $@"
+    Rscript -e 'library(devtools); library(methods); install_version(commandArgs(TRUE)[1], commandArgs(TRUE)[2], repos="'"${CRAN}"'")' "$@"
+}
+
 BiocInstall() {
     if [[ "" == "$*" ]]; then
         >&2 echo "No arguments to bioc_install"
@@ -384,6 +394,11 @@ case $COMMAND in
     ## Install an R dependency from CRAN
     "install_r"|"r_install")
         RInstall "$@"
+        ;;
+    ##
+    ## Install a specific version of an R dependency from CRAN 
+    "r_install_version"|"install_r_version")
+        RInstallVersion "$@"
         ;;
     ##
     ## Install an R dependency from Bioconductor
