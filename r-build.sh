@@ -81,6 +81,12 @@ GetDeps() {
 	sudo apt-get update
 	sudo apt-get install -y curl libcurl4-openssl-dev
     fi
+    if [ $CI == "semaphore" ]; then
+	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4B1D4339
+	sudo add-apt-repository -y ppa:edd/misc
+	sudo apt-get update
+	sudo apt-get install -y libpcre3-dev
+    fi
 }
 
 GetZlib() {
