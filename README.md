@@ -29,8 +29,8 @@ CRAN maintainers run their tests on these versions as well.
 
 ## Status for R-devel builds
 
-[![Travis](https://travis-ci.org/metacran/r-builder.png?branch=travis-devel)](https://travis-ci.org/metacran/r-builder)
-[![Semaphore](https://semaphoreapp.com/api/v1/projects/414ed80e-64af-46fc-8d50-2c6371e4adca/281321/badge.png)](https://semaphoreapp.com/gaborcsardi/r-builder)
+[![Travis](https://travis-ci.org/metacran/r-builder.svg?branch=travis-devel)](https://travis-ci.org/metacran/r-builder)
+[![Semaphore](https://semaphoreapp.com/api/v1/projects/414ed80e-64af-46fc-8d50-2c6371e4adca/281321/badge.svg)](https://semaphoreapp.com/gaborcsardi/r-builder)
 
 # How to use r-builder with your package
 
