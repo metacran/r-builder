@@ -86,38 +86,6 @@ BootstrapLinux() {
 	unzip -q ${CI_NAME}-${RVERSION}.zip
 	mv r-builder-${CI_NAME}-${RVERSION}/R-${RVERSION} .
     )
-
-    # Install an R development environment. qpdf is also needed for
-    # --as-cran checks:
-    #   https://stat.ethz.ch/pipermail/r-help//2012-September/335676.html
-    Retry sudo apt-get -y update -qq
-    Retry sudo apt-get -y install --no-install-recommends qpdf gfortran
-
-    if [ $CI_NAME = "travis" ]; then
-	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7635B973
-	sudo add-apt-repository -y ppa:ubuntu-lxc/buildd-backports
-	sudo apt-get update
-	sudo apt-get install -y curl libcurl4-openssl-dev
-    fi
-
-    # Process options
-    BootstrapLinuxOptions
-}
-
-BootstrapLinuxOptions() {
-    if [[ -n "$BOOTSTRAP_LATEX" ]]; then
-        # We add a backports PPA for more recent TeX packages.
-        sudo add-apt-repository -y "ppa:texlive-backports/ppa"
-
-        Retry sudo apt-get -y install --no-install-recommends \
-            texlive-base texlive-latex-base texlive-generic-recommended \
-            texlive-fonts-recommended texlive-fonts-extra \
-            texlive-extra-utils texlive-latex-recommended texlive-latex-extra \
-            texinfo lmodern
-    fi
-    if [[ -n "$BOOTSTRAP_PANDOC" ]]; then
-        InstallPandoc 'linux/debian/x86_64'
-    fi
 }
 
 BootstrapMac() {
