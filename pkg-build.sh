@@ -159,6 +159,14 @@ EnsureDevtools() {
     fi
 }
 
+EnsureRemotes() {
+    if ! Rscript -e 'if (!("remotes" %in% rownames(installed.packages()))) q(status=1)' ; then
+        # Install remotes and testthat.
+	RunScript -e 'source("https://raw.githubusercontent.com/MangoTheCat/remotes/master/install-github.R")$value("mangothecat/remotes")'
+        RInstall testthat
+    fi
+}
+
 RInstall() {
     if [[ "" == "$*" ]]; then
         >&2 echo "No arguments to r_install"
@@ -170,13 +178,13 @@ RInstall() {
 }
 
 RInstallVersion() {
-    EnsureDevtools
+    EnsureRemotes
     if [[ "" == "$*" ]]; then
         >&2 echo "No arguments to r_install_version"
         exit 1
     fi
     >&2 echo "Installing R package(s): $@"
-    Rscript -e 'library(devtools); library(methods); install_version(commandArgs(TRUE)[1], commandArgs(TRUE)[2], repos="'"${CRAN}"'")' "$@"
+    Rscript -e 'library(remotes); library(methods); install_version(commandArgs(TRUE)[1], commandArgs(TRUE)[2], repos="'"${CRAN}"'")' "$@"
 }
 
 BiocInstall() {
@@ -190,27 +198,26 @@ BiocInstall() {
 }
 
 InstallGithub() {
-    EnsureDevtools
+    EnsureRemotes
 
     >&2 echo "Installing GitHub packages: $@"
     # Install the package.
-    Rscript -e 'library(devtools); library(methods); options(repos=c(CRAN="'"${CRAN}"'")); install_github(commandArgs(TRUE), build_vignettes = FALSE)' "$@"
+    Rscript -e 'library(remotes); library(methods); options(repos=c(CRAN="'"${CRAN}"'")); install_github(commandArgs(TRUE))' "$@"
 }
 
 InstallDeps() {
-    EnsureDevtools
-    Rscript -e 'library(devtools); library(methods); options(repos=c(CRAN="'"${CRAN}"'")); install_deps(dependencies = TRUE)'
+    EnsureRemotes
+    Rscript -e 'library(remotes); library(methods); options(repos=c(CRAN="'"${CRAN}"'")); install_deps(dependencies = TRUE)'
 }
 
 InstallBiocDeps() {
-    EnsureDevtools
-    Rscript -e "${R_USE_BIOC_CMDS}"' library(devtools); install_deps(dependencies = TRUE)'
+    EnsureRemotes
+    Rscript -e "${R_USE_BIOC_CMDS}"' library(remotes); install_deps(dependencies = TRUE)'
 }
 
 DumpSysinfo() {
     >&2 echo "Dumping system information."
-    EnsureDevtools
-    R -e '.libPaths(); options(width = 90) ; devtools::session_info(); installed.packages()'
+    R -e '.libPaths(); options(width = 90) ; sessionInfo(); installed.packages()'
 }
 
 DumpByPattern() {
@@ -273,6 +280,7 @@ RunCheck() {
     # Check reverse dependencies
     if [[ -n "$R_CHECK_REVDEP" ]]; then
         >&2 echo "Checking reverse dependencies"
+	EnsureDevtools
         Rscript -e 'library(devtools); checkOutput <- unlist(revdep_check(as.package(".")$package));if (!is.null(checkOutput)) {print(data.frame(pkg = names(checkOutput), error = checkOutput));for(i in seq_along(checkOutput)){;cat("\n", names(checkOutput)[i], " Check Output:\n  ", paste(readLines(regmatches(checkOutput[i], regexec("/.*\\.out", checkOutput[i]))[[1]]), collapse = "\n  ", sep = ""), "\n", sep = "")};q(status = 1, save = "no")}'
     fi
 
@@ -330,6 +338,11 @@ case $COMMAND in
         EnsureDevtools
         ;;
     ##
+    ## Ensure remotes is loaded (implicitly called)
+    "install_remotes"|"remotes_install")
+        EnsureRemotes
+        ;;
+    ##
     ## Install an R dependency from CRAN
     "install_r"|"r_install")
         RInstall "$@"
@@ -345,17 +358,17 @@ case $COMMAND in
         BiocInstall "$@"
         ;;
     ##
-    ## Install a package from github sources (needs devtools)
+    ## Install a package from github sources (needs remotes)
     "install_github"|"github_package")
         InstallGithub "$@"
         ;;
     ##
-    ## Install package dependencies from CRAN (needs devtools)
+    ## Install package dependencies from CRAN (needs remotes)
     "install_deps")
         InstallDeps
         ;;
     ##
-    ## Install package dependencies from Bioconductor and CRAN (needs devtools)
+    ## Install package dependencies from Bioconductor and CRAN (needs remotes)
     "install_bioc_deps")
         InstallBiocDeps
         ;;
