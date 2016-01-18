@@ -44,6 +44,7 @@ addons:
     - texlive-latex-recommended
     - texlive-latex-extra
     - texinfo
+    - libcurl4-openssl-dev
 
 cache:
   - apt
