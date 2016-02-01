@@ -178,8 +178,8 @@ EnsureDevtools() {
 EnsureRemotes() {
     if ! Rscript -e 'if (!("remotes" %in% rownames(installed.packages()))) q(status=1)' ; then
         # Install remotes and testthat.
-	RunScript -e 'source("https://raw.githubusercontent.com/MangoTheCat/remotes/master/install-github.R")$value("mangothecat/remotes")'
-        RInstall testthat curl
+	RInstall testthat curl
+	Rscript -e 'curl::curl_download("https://raw.githubusercontent.com/MangoTheCat/remotes/master/install-github.R", tmp <- tempfile()); source(tmp)$value("mangothecat/remotes")'
     fi
 }
 
