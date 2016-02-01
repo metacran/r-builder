@@ -179,7 +179,7 @@ EnsureRemotes() {
     if ! Rscript -e 'if (!("remotes" %in% rownames(installed.packages()))) q(status=1)' ; then
         # Install remotes and testthat.
 	RunScript -e 'source("https://raw.githubusercontent.com/MangoTheCat/remotes/master/install-github.R")$value("mangothecat/remotes")'
-        RInstall testthat
+        RInstall testthat curl
     fi
 }
 
