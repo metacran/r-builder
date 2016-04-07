@@ -1,0 +1,9 @@
+Package: compiler
+Version: 3.2.4
+Priority: base
+Title: The R Compiler Package
+Author: Luke Tierney <luke-tierney@uiowa.edu>
+Maintainer: R Core Team <R-core@r-project.org>
+Description: Byte code compiler for R.
+License: Part of R 3.2.4
+Built: R 3.2.4; ; 2016-04-07 14:37:39 UTC; unix
