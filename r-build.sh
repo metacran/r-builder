@@ -79,7 +79,7 @@ GetDeps() {
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7635B973
 	sudo add-apt-repository -y ppa:ubuntu-lxc/buildd-backports
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A2C4D71B
-	sudo add-apt-repository -y ppa:rsrchboy/ubuntu
+	sudo add-apt-repository -y ppa:rsrchboy/ppa
 	sudo apt-get update
 	sudo apt-get install -y curl libcurl4-openssl-dev
     fi
