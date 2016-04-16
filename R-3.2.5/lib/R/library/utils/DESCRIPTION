@@ -1,0 +1,10 @@
+Package: utils
+Version: 3.2.5
+Priority: base
+Title: The R Utils Package
+Author: R Core Team and contributors worldwide
+Maintainer: R Core Team <R-core@r-project.org>
+Description: R utility functions.
+License: Part of R 3.2.5
+Suggests: methods
+Built: R 3.2.5; x86_64-pc-linux-gnu; 2016-04-16 08:19:39 UTC; unix

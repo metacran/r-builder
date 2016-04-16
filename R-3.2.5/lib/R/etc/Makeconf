@@ -1,0 +1,161 @@
+# etc/Makeconf.  Generated from Makeconf.in by configure.
+#
+# ${R_HOME}/etc/Makeconf
+#
+# R was configured using the following call
+# (not including env. vars and site configuration)
+# configure  '--prefix=/home/runner/R-bin/R-3.2.5' 'R_PRINTCMD=/usr/bin/lpr' 'R_PAPERSIZE=letter' 'R_BATCHSAVE=--no-save --no-restore' 'JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64' 'CFLAGS=-std=gnu99 -Wall -pedantic' 'LDFLAGS=-L /home/runner/R-bin/R-3.2.5/lib' 'LIBS=-lz -lbz2 -llzma' 'CPPFLAGS=-I /home/runner/R-bin/R-3.2.5/include' 'CXXFLAGS=-Wall -pedantic'
+
+## This fails if it contains spaces, or if it is quoted
+include $(R_SHARE_DIR)/make/vars.mk
+
+AR = ar
+## Used by packages 'maps' and 'mapdata'
+AWK = /usr/bin/awk
+BLAS_LIBS = -L$(R_HOME)/lib$(R_ARCH) -lRblas
+C_VISIBILITY = -fvisibility=hidden
+CC = gcc
+CFLAGS = -std=gnu99 -Wall -pedantic $(LTO)
+CPICFLAGS = -fpic
+CPPFLAGS = -I /home/runner/R-bin/R-3.2.5/include
+CXX = g++
+CXXCPP = $(CXX) -E
+CXXFLAGS = -Wall -pedantic $(LTO)
+CXXPICFLAGS = -fpic
+CXX1X = g++
+CXX1XFLAGS = -Wall -pedantic
+CXX1XPICFLAGS = -fpic
+CXX1XSTD =  -std=c++11
+DYLIB_EXT = .so
+DYLIB_LD = $(CC)
+DYLIB_LDFLAGS = -shared -fopenmp# $(CFLAGS) $(CPICFLAGS)
+DYLIB_LINK = $(DYLIB_LD) $(DYLIB_LDFLAGS) $(LDFLAGS)
+ECHO = echo
+ECHO_C = 
+ECHO_N = -n
+ECHO_T = 
+## NB, set FC before F77 as on Solaris make, setting FC sets F77
+FC = gfortran
+FCFLAGS = -g -O2 $(LTO)
+## additional libs needed when linking with $(FC), e.g. on Solaris
+FCLIBS = 
+F77 = gfortran
+F77_VISIBILITY = -fvisibility=hidden
+FFLAGS = -g -O2 $(LTO)
+FLIBS =  -lgfortran -lm -lquadmath
+FCPICFLAGS = -fpic
+FPICFLAGS = -fpic
+FOUNDATION_CPPFLAGS = 
+FOUNDATION_LIBS = 
+JAR = /usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/jar
+JAVA = /usr/lib/jvm/java-1.7.0-openjdk-amd64/jre/bin/java
+JAVAC = /usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/javac
+JAVAH = /usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/javah
+## JAVA_HOME might be used in the next three.  
+## They are for packages 'JavaGD' and 'rJava'
+JAVA_HOME = /usr/lib/jvm/java-1.7.0-openjdk-amd64
+JAVA_CPPFLAGS = -I$(JAVA_HOME)/include
+JAVA_LIBS = -L$(JAVA_HOME)/jre/lib/amd64/server -ljvm
+JAVA_LD_LIBRARY_PATH = $(JAVA_HOME)/jre/lib/amd64/server
+LAPACK_LIBS = -L$(R_HOME)/lib$(R_ARCH) -lRlapack
+## we only need this is if it is external, as otherwise link to R
+LIBINTL= 
+LIBM = -lm
+LIBR0 = 
+LIBR1 = 
+LIBR =  
+LIBS =  -lpcre -llzma -lbz2 -lz -lrt -ldl -lm -lz -lbz2 -llzma -licuuc -licui18n
+## needed by R CMD config
+LIBnn = lib
+LIBTOOL = $(SHELL) "$(R_HOME)/bin/libtool"
+LDFLAGS = -L /home/runner/R-bin/R-3.2.5/lib
+LTO = 
+## needed to build applications linking to static libR
+MAIN_LD = $(CC)
+MAIN_LDFLAGS = -Wl,--export-dynamic -fopenmp
+MAIN_LINK = $(MAIN_LD) $(MAIN_LDFLAGS) $(LDFLAGS)
+MKINSTALLDIRS = $(R_HOME)/bin/mkinstalldirs
+OBJC = 
+OBJCFLAGS =  $(LTO)
+OBJC_LIBS = 
+OBJCXX = 
+R_ARCH = 
+RANLIB = ranlib
+SAFE_FFLAGS = -g -O2 -ffloat-store
+SED = /bin/sed
+SHELL = /bin/bash
+SHLIB_CFLAGS = 
+SHLIB_CXXFLAGS = 
+SHLIB_CXXLD = $(CXX)
+SHLIB_CXXLDFLAGS = -shared
+SHLIB_CXX1XLD = $(CXX1X) $(CXX1XSTD)
+SHLIB_CXX1XLDFLAGS = -shared
+SHLIB_EXT = .so
+SHLIB_FCLD = $(FC)
+SHLIB_FCLDFLAGS = -shared
+SHLIB_FFLAGS = 
+SHLIB_LD = $(CC)
+SHLIB_LDFLAGS = -shared# $(CFLAGS) $(CPICFLAGS)
+SHLIB_LIBADD = 
+## We want to ensure libR is picked up from $(R_HOME)/lib
+## before e.g. /usr/local/lib if a version is already installed.
+SHLIB_LINK = $(SHLIB_LD) $(SHLIB_LDFLAGS) $(LIBR0) $(LDFLAGS)
+SHLIB_OPENMP_CFLAGS = -fopenmp
+SHLIB_OPENMP_CXXFLAGS = -fopenmp
+SHLIB_OPENMP_FCFLAGS = -fopenmp
+SHLIB_OPENMP_FFLAGS = -fopenmp
+STRIP_LIBS = strip --strip-unneeded
+STRIP_STATIC_LIBS = strip --strip-debug
+TCLTK_CPPFLAGS = -I/usr/include/tcl8.6 -I/usr/include/tcl8.6 
+TCLTK_LIBS = -L/usr/lib/x86_64-linux-gnu -ltcl8.6 -L/usr/lib/x86_64-linux-gnu -ltk8.6 -lX11 -lXss -lXext
+YACC = bison -y
+
+## for linking to libR.a
+STATIC_LIBR = # -Wl,--whole-archive "$(R_HOME)/lib$(R_ARCH)/libR.a" -Wl,--no-whole-archive $(BLAS_LIBS) $(FLIBS)  $(LIBINTL) -lreadline  $(LIBS)
+
+R_XTRA_CFLAGS = 
+R_XTRA_CPPFLAGS =  -I$(R_INCLUDE_DIR) -DNDEBUG
+R_XTRA_CXXFLAGS = 
+R_XTRA_FFLAGS = 
+
+ALL_CFLAGS = $(R_XTRA_CFLAGS) $(PKG_CFLAGS) $(CPICFLAGS) $(SHLIB_CFLAGS) $(CFLAGS)
+ALL_CPPFLAGS = $(R_XTRA_CPPFLAGS) $(PKG_CPPFLAGS) $(CPPFLAGS) $(CLINK_CPPFLAGS)
+ALL_CXXFLAGS = $(R_XTRA_CXXFLAGS) $(PKG_CXXFLAGS) $(CXXPICFLAGS) $(SHLIB_CXXFLAGS) $(CXXFLAGS)
+ALL_OBJCFLAGS = $(PKG_OBJCFLAGS) $(CPICFLAGS) $(SHLIB_CFLAGS) $(OBJCFLAGS)
+ALL_OBJCXXFLAGS = $(PKG_OBJCXXFLAGS) $(CXXPICFLAGS) $(SHLIB_CXXFLAGS) $(OBJCXXFLAGS)
+ALL_FFLAGS = $(R_XTRA_FFLAGS) $(PKG_FFLAGS) $(FPICFLAGS) $(SHLIB_FFLAGS) $(FFLAGS)
+## LIBR here as a couple of packages use this without SHLIB_LINK
+ALL_LIBS = $(PKG_LIBS) $(SHLIB_LIBADD) $(LIBR)# $(LIBINTL)
+
+.SUFFIXES:
+.SUFFIXES: .c .cc .cpp .d .f .f90 .f95 .m .mm .M .o
+
+.c.o:
+	$(CC) $(ALL_CPPFLAGS) $(ALL_CFLAGS) -c $< -o $@
+.c.d:
+	@echo "making $@ from $<"
+	@$(CC) -MM $(ALL_CPPFLAGS) $< > $@
+.m.d:
+	@echo > $@
+.cc.o:
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) -c $< -o $@
+.cpp.o:
+	$(CXX) $(ALL_CPPFLAGS) $(ALL_CXXFLAGS) -c $< -o $@
+.cc.d:
+	@echo "making $@ from $<"
+	@$(CXX) -M $(ALL_CPPFLAGS) $< > $@
+.cpp.d:
+	@echo "making $@ from $<"
+	@$(CXX) -M $(ALL_CPPFLAGS) $< > $@
+.m.o:
+	$(OBJC) $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -c $< -o $@
+.mm.o:
+	$(OBJCXX) $(ALL_CPPFLAGS) $(ALL_OBJCXXFLAGS) -c $< -o $@
+.M.o:
+	$(OBJCXX) $(ALL_CPPFLAGS) $(ALL_OBJCXXFLAGS) -c $< -o $@
+.f.o:
+	$(F77) $(ALL_FFLAGS) -c $< -o $@
+.f95.o:
+	$(FC) $(PKG_FCFLAGS) $(FCPICFLAGS) $(FCFLAGS) -c  $< -o $@
+.f90.o:
+	$(FC) $(PKG_FCFLAGS) $(FCPICFLAGS) $(FCFLAGS) -c  $< -o $@

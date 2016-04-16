@@ -1,0 +1,41 @@
+Copyrights
+==========
+The Matrix package, an R package, available from CRAN or R-forge,
+consists of basically two parts.
+
+1. Matrix' own C code in src/*.[ch] (apart from cs.h and cs.c),
+   R code in R/*.R, including more in ./inst/ and ./tests/ and other
+   directories including vignettes, documentation etc.
+   All these have been created by Douglas Bates and Martin Maechler and
+   hence are
+
+   Copyright (C) 1999-2016 Douglas Bates and Martin Maechler
+
+2. The Matrix package includes libraries AMD, CHOLMOD,
+  COLAMD, CSparse and SPQR from the SuiteSparse collection of Tim
+  Davis.  All sections of that code are covered by the GPL or
+  LGPL licenses.  See the directory (inst/) doc/SuiteSparse/ for details.
+
+
+Licence
+=======
+
+    This is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 or 3 of the License
+    (at your option).
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+Files share/licenses/GPL-2 and share/licenses/GPL-3 in the R
+(source or binary) distribution are copies of versions 2 and 3
+of the 'GNU General Public License'.
+These can also be viewed at https://www.r-project.org/Licenses/
+
+
+Douglas M. Bates, University of Wisconsin, Madison, bates@stat.wisc.edu
+Martin Maechler ETH Zurich,  maechler@stat.math.ethz.ch | maechler@r-project.org
+
