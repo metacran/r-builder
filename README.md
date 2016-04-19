@@ -15,6 +15,8 @@ Currently supported R versions:
 * R-devel, built hourly.
 * R-release, refers to the current stable release
 * R-oldrel, refers to last release from the previous minor version
+* R 3.2.5
+* R 3.2.4
 * R 3.2.3
 * R 3.2.2
 * R 3.2.1
