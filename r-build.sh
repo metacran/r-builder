@@ -152,7 +152,7 @@ GetSource() {
 
 GetDevelSource() {
     svn checkout --non-interactive \
-	http://svn.r-project.org/R/trunk/ R-devel
+	https://svn.r-project.org/R/trunk/ R-devel
 }
 
 GetRecommended() {
