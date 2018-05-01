@@ -1,0 +1,10 @@
+Package: base
+Version: 3.6.0
+Priority: base
+Title: The R Base Package
+Author: R Core Team and contributors worldwide
+Maintainer: R Core Team <R-core@r-project.org>
+Description: Base R functions.
+License: Part of R 3.6.0
+Suggests: methods
+Built: R 3.6.0; ; 2018-05-01 17:39:47 UTC; unix
